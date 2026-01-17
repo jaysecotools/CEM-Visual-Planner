@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Mapping Tool - Cert III Conservation & Ecosystem Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --color-safety: #ff6b6b;
+            --color-foundational: #4ecdc4;
+            --color-practical: #45b7d1;
+            --color-machinery: #96ceb4;
+            --color-capstone: #ffeaa7;
+            --color-project: #a29bfe;
+            --color-specialist: #fd79a8;
+            --color-seasonal: #55efc4;
+            --color-holiday: #dfe6e9;
+            --color-term-break: #b2bec3;
+            --color-grid: #636e72;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3436 0%, #0984e3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        select, button {
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:hover, button:hover {
+            border-color: #0984e3;
+        }
+
+        button.primary {
+            background: #0984e3;
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+
+        button.primary:hover {
+            background: #0770c4;
+        }
+
+        .legend {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 25px;
+            min-height: 80vh;
+        }
+
+        .unit-palette {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .unit-palette h3 {
+            margin-bottom: 15px;
+            color: #2d3436;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f2f6;
+        }
+
+        .palette-unit {
+            background: #f8f9fa;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: grab;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .palette-unit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .palette-unit .unit-code {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .palette-unit .unit-name {
+            font-size: 12px;
+            color: #636e72;
+            margin-bottom: 6px;
+        }
+
+        .palette-unit .unit-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .unit-tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .course-timeline {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .timeline-header {
+            display: flex;
+            margin-bottom: 20px;
+            position: sticky;
+            left: 0;
+            background: white;
+            z-index: 10;
+        }
+
+        .term-column {
+            flex-shrink: 0;
+            width: 250px;
+            padding: 10px;
+            background: #2d3436;
+            color: white;
+            text-align: center;
+            font-weight: 600;
+            border-right: 2px solid white;
+        }
+
+        .week-header {
+            display: flex;
+            margin-bottom: 15px;
+            position: sticky;
+            left: 0;
+        }
+
+        .week-cell {
+            flex-shrink: 0;
+            width: 150px;
+            padding: 10px;
+            text-align: center;
+            background: #f8f9fa;
+            border-right: 1px solid #ddd;
+            border-bottom: 2px solid #636e72;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .week-number {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .week-dates {
+            font-size: 12px;
+            color: #636e72;
+        }
+
+        .timeline-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .swimlane {
+            display: flex;
+            min-height: 100px;
+            position: relative;
+        }
+
+        .swimlane-label {
+            flex-shrink: 0;
+            width: 120px;
+            padding: 10px;
+            background: #f8f9fa;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-right: 2px solid #ddd;
+        }
+
+        .swimlane-content {
+            display: flex;
+            flex: 1;
+            position: relative;
+        }
+
+        .week-slot {
+            flex-shrink: 0;
+            width: 150px;
+            min-height: 100px;
+            border-right: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+            padding: 5px;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .week-slot:hover {
+            background: #f8f9fa;
+        }
+
+        .week-slot.holiday {
+            background: var(--color-holiday);
+        }
+
+        .droppable {
+            background: rgba(9, 132, 227, 0.05);
+        }
+
+        .unit-block {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            cursor: move;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .unit-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .unit-block.dragging {
+            opacity: 0.8;
+            transform: rotate(3deg);
+        }
+
+        .unit-block .unit-code {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .unit-block .unit-name {
+            font-size: 11px;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .unit-block .unit-duration {
+            font-size: 10px;
+            color: rgba(0,0,0,0.6);
+            position: absolute;
+            bottom: 5px;
+            right: 8px;
+            background: rgba(255,255,255,0.8);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .project-thread {
+            position: absolute;
+            height: 4px;
+            background: var(--color-project);
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 1;
+            border-radius: 2px;
+        }
+
+        .project-milestone {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--color-project);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--color-project);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: #2d3436;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #636e72;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .notes-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .notes-section h4 {
+            margin-bottom: 10px;
+            color: #2d3436;
+        }
+
+        .resource-item {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 4px solid #0984e3;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #636e72;
+            font-size: 14px;
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .week-slot {
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .week-slot {
+                width: 100px;
+            }
+            
+            .term-column {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Certificate III in Conservation & Ecosystem Management</h1>
+        <div class="subtitle">37-Week Course Sequencing Tool | Interactive Visual Planner</div>
+        <div style="font-size: 14px; opacity: 0.8;">Drag units to adjust sequence | Click units to edit details | Save/load your custom plans</div>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label for="viewMode">View Mode</label>
+            <select id="viewMode">
+                <option value="week">Week View</option>
+                <option value="term">Term View</option>
+                <option value="teacher">Teacher View</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="highlightMode">Highlight</label>
+            <select id="highlightMode">
+                <option value="none">None</option>
+                <option value="specialist">Specialist Units</option>
+                <option value="safety">Safety Units</option>
+                <option value="seasonal">Seasonal Timing</option>
+                <option value="assessment">Assessment Points</option>
+            </select>
+        </div>
+        
+        <div style="flex: 1;"></div>
+        
+        <button class="primary" id="savePlan">Save Current Plan</button>
+        <button id="resetPlan">Reset to Default</button>
+        <button id="printPlan">Print View</button>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-safety);"></div>
+            <span>Safety Units</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-foundational);"></div>
+            <span>Foundational Skills</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-practical);"></div>
+            <span>Practical Application</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-machinery);"></div>
+            <span>Machinery Units</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-capstone);"></div>
+            <span>Capstone Units</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-specialist);"></div>
+            <span>Specialist Teacher</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-seasonal);"></div>
+            <span>Seasonal Timing</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-project);"></div>
+            <span>Integrated Project</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="unit-palette">
+            <h3>Unit Palette</h3>
+            <div id="paletteUnits">
+                <!-- Units will be added here by JavaScript -->
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <h3>Add Custom Unit</h3>
+                <button id="addCustomUnit" style="width: 100%; margin-top: 10px;">+ Add Custom Unit/Block</button>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <h3>Saved Plans</h3>
+                <div id="savedPlansList">
+                    <!-- Saved plans will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="course-timeline">
+            <div class="timeline-header">
+                <div class="term-column">Term 1 (Weeks 1-10)</div>
+                <div class="term-column">Term 2 (Weeks 11-20)</div>
+                <div class="term-column">Term 3 (Weeks 21-30)</div>
+                <div class="term-column">Term 4 (Weeks 31-37)</div>
+            </div>
+            
+            <div class="week-header" id="weekHeaders">
+                <!-- Week headers will be added by JavaScript -->
+            </div>
+            
+            <div class="timeline-grid" id="timelineGrid">
+                <!-- Timeline grid will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="unitModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Edit Unit Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="modalBody">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Course Mapping Tool v1.0 | Designed for Cert III Conservation & Ecosystem Management | 37 Teaching Weeks (10 + 10 + 10 + 7)</p>
+        <p style="font-size: 12px; margin-top: 10px;">Drag units between weeks to adjust sequence. Seasonal units have constraints. Click units to add notes and resources.</p>
+    </div>
+
+    <script>
+        // Course data structure
+        const courseData = {
+            terms: [
+                { number: 1, weeks: 10, startWeek: 1, name: "Safety, Foundations & Summer Harvest" },
+                { number: 2, weeks: 10, startWeek: 11, name: "Practical Skills & Application" },
+                { number: 3, weeks: 10, startWeek: 21, name: "Machinery & Advanced Integration" },
+                { number: 4, weeks: 7, startWeek: 31, name: "Capstone & Finalisation" }
+            ],
+            holidays: [
+                { week: 11, label: "Easter & School Holidays", duration: 1 },
+                { week: 21, label: "School Holidays", duration: 1 },
+                { week: 31, label: "School Holidays", duration: 1 }
+            ],
+            projectMilestones: [
+                { week: 18, label: "Project Start" },
+                { week: 25, label: "Phase 2" },
+                { week: 30, label: "Integration" },
+                { week: 34, label: "Final Phase" }
+            ]
+        };
+
+        // Default unit placement based on your plan
+        const defaultUnits = [
+            // Term 1
+            { id: 1, code: "AHCWHS302", name: "Work Health & Safety", weeks: [1, 2], color: "safety", tags: ["SAFETY"], teacher: "main", notes: "Non-negotiable foundation" },
+            { id: 2, code: "HLTAID011", name: "First Aid", weeks: [1, 2], color: "safety", tags: ["SAFETY", "SPECIALIST"], teacher: "other", notes: "Clustered with WHS for efficiency" },
+            { id: 3, code: "AHCECR305", name: "Collect native seed", weeks: [3, 4], color: "seasonal", tags: ["SEASONAL"], teacher: "main", notes: "Must be early due to seed season" },
+            { id: 4, code: "AHCBIO303", name: "Biosecurity", weeks: [3, 4], color: "foundational", tags: [], teacher: "main", notes: "Essential for seed/plant handling" },
+            { id: 5, code: "AHCPCM303", name: "Identify plant specimens", weeks: [5, 6, 7], color: "foundational", tags: [], teacher: "main", notes: "Foundational skill - use seed collection trips" },
+            { id: 6, code: "AHCNSY207", name: "Undertake propagation activities", weeks: [8], color: "foundational", tags: [], teacher: "main", notes: "Follow-up to seed collection" },
+            { id: 7, code: "AHCFAU302", name: "Identify fauna in the field", weeks: [9, 10], color: "foundational", tags: ["SEASONAL"], teacher: "main", notes: "Late summer/early autumn activity" },
+            
+            // Term 2
+            { id: 8, code: "AHCPMG301", name: "Control weeds", weeks: [11, 12], color: "practical", tags: [], teacher: "main", notes: "Builds on plant ID" },
+            { id: 9, code: "AHCCHM304", name: "Transport/handle chemicals", weeks: [13], color: "practical", tags: ["SPECIALIST"], teacher: "other", notes: "Clustered with weed control" },
+            { id: 10, code: "AHCCHM307", name: "Apply chemicals", weeks: [13], color: "practical", tags: ["SPECIALIST"], teacher: "other", notes: "Clustered chemical application" },
+            { id: 11, code: "FWPCOT2266", name: "Operate brush cutter", weeks: [14, 15], color: "practical", tags: ["SPECIALIST"], teacher: "other", notes: "Practical vegetation management" },
+            { id: 12, code: "AHCECR301", name: "Maintain native ecosystem areas", weeks: [16, 17], color: "practical", tags: [], teacher: "main", notes: "Ecosystem-scale application" },
+            { id: 13, code: "AHCLPW313", name: "Water sampling & testing", weeks: [18, 19, 20], color: "practical", tags: ["SEASONAL"], teacher: "main", notes: "Wetter months activity" },
+            
+            // Term 3
+            { id: 14, code: "AHCMOM213", name: "Operate chainsaw", weeks: [21, 22, 23], color: "machinery", tags: ["SPECIALIST"], teacher: "other", notes: "Requires significant planning" },
+            { id: 15, code: "AHCMOM216", name: "Operate SSUV", weeks: [21, 22, 23], color: "machinery", tags: ["SPECIALIST"], teacher: "other", notes: "Clustered machinery units" },
+            { id: 16, code: "AHCECR301", name: "Ecosystem maintenance (cont.)", weeks: [24, 25, 26, 27], color: "practical", tags: [], teacher: "main", notes: "Enhanced capability application" },
+            { id: 17, code: "INTEGRATION", name: "Skill Integration & Project Work", weeks: [28, 29, 30], color: "project", tags: ["FLEXIBLE"], teacher: "main", notes: "Buffer for weather/adaptation" },
+            
+            // Term 4
+            { id: 18, code: "AHCECR309", name: "Conduct ecological site inspection", weeks: [31, 32, 33], color: "capstone", tags: ["CAPSTONE"], teacher: "main", notes: "Synthesis of all skills" },
+            { id: 19, code: "PROJECT", name: "Final Project Phase", weeks: [34, 35, 36], color: "project", tags: [], teacher: "main", notes: "Complete integrated project" },
+            { id: 20, code: "ADMIN", name: "Portfolio Finalisation", weeks: [37], color: "safety", tags: [], teacher: "main", notes: "Verification and closure" }
+        ];
+
+        // Unit templates for palette
+        const unitTemplates = [
+            { code: "AHCWHS302", name: "Work Health & Safety", color: "safety", tags: ["SAFETY"], defaultWeeks: 2 },
+            { code: "HLTAID011", name: "First Aid", color: "safety", tags: ["SAFETY", "SPECIALIST"], defaultWeeks: 2 },
+            { code: "AHCECR305", name: "Collect native seed", color: "seasonal", tags: ["SEASONAL"], defaultWeeks: 2 },
+            { code: "AHCBIO303", name: "Biosecurity", color: "foundational", tags: [], defaultWeeks: 2 },
+            { code: "AHCPCM303", name: "Identify plant specimens", color: "foundational", tags: [], defaultWeeks: 3 },
+            { code: "AHCNSY207", name: "Undertake propagation activities", color: "foundational", tags: [], defaultWeeks: 1 },
+            { code: "AHCFAU302", name: "Identify fauna in the field", color: "foundational", tags: ["SEASONAL"], defaultWeeks: 2 },
+            { code: "AHCPMG301", name: "Control weeds", color: "practical", tags: [], defaultWeeks: 2 },
+            { code: "AHCCHM304", name: "Transport/handle chemicals", color: "practical", tags: ["SPECIALIST"], defaultWeeks: 1 },
+            { code: "AHCCHM307", name: "Apply chemicals", color: "practical", tags: ["SPECIALIST"], defaultWeeks: 1 },
+            { code: "FWPCOT2266", name: "Operate brush cutter", color: "practical", tags: ["SPECIALIST"], defaultWeeks: 2 },
+            { code: "AHCECR301", name: "Maintain native ecosystem areas", color: "practical", tags: [], defaultWeeks: 2 },
+            { code: "AHCLPW313", name: "Water sampling & testing", color: "practical", tags: ["SEASONAL"], defaultWeeks: 3 },
+            { code: "AHCMOM213", name: "Operate chainsaw", color: "machinery", tags: ["SPECIALIST"], defaultWeeks: 3 },
+            { code: "AHCMOM216", name: "Operate SSUV", color: "machinery", tags: ["SPECIALIST"], defaultWeeks: 3 },
+            { code: "AHCECR309", name: "Conduct ecological site inspection", color: "capstone", tags: ["CAPSTONE"], defaultWeeks: 3 },
+            { code: "CUSTOM", name: "Custom Unit/Block", color: "foundational", tags: ["CUSTOM"], defaultWeeks: 1 }
+        ];
+
+        // State management
+        let currentUnits = JSON.parse(JSON.stringify(defaultUnits));
+        let draggedUnit = null;
+        let draggedFromPalette = false;
+        let currentPlanId = 'default';
+
+        // Color mapping
+        const colorMap = {
+            safety: "var(--color-safety)",
+            foundational: "var(--color-foundational)",
+            practical: "var(--color-practical)",
+            machinery: "var(--color-machinery)",
+            capstone: "var(--color-capstone)",
+            project: "var(--color-project)",
+            specialist: "var(--color-specialist)",
+            seasonal: "var(--color-seasonal)"
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTimeline();
+            renderPalette();
+            renderTimeline();
+            setupEventListeners();
+            loadSavedPlans();
+        });
+
+        function initializeTimeline() {
+            const weekHeaders = document.getElementById('weekHeaders');
+            weekHeaders.innerHTML = '';
+            
+            // Create week headers
+            for (let week = 1; week <= 37; week++) {
+                const weekCell = document.createElement('div');
+                weekCell.className = 'week-cell';
+                weekCell.innerHTML = `
+                    <div class="week-number">Week ${week}</div>
+                    <div class="week-dates">${getWeekDates(week)}</div>
+                `;
+                
+                // Check if this is a holiday week
+                const holiday = courseData.holidays.find(h => h.week === week);
+                if (holiday) {
+                    weekCell.style.background = 'var(--color-holiday)';
+                    weekCell.innerHTML += `<div style="font-size: 10px; color: #636e72; margin-top: 5px;">${holiday.label}</div>`;
+                }
+                
+                weekHeaders.appendChild(weekCell);
+            }
+        }
+
+        function getWeekDates(week) {
+            // Simplified date calculation - in real app, use actual dates
+            const startMonth = 2; // February
+            const months = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            let monthIndex = Math.floor((week - 1) / 4);
+            if (monthIndex >= months.length) monthIndex = months.length - 1;
+            
+            return months[monthIndex];
+        }
+
+        function renderPalette() {
+            const palette = document.getElementById('paletteUnits');
+            palette.innerHTML = '';
+            
+            unitTemplates.forEach(template => {
+                const unitDiv = document.createElement('div');
+                unitDiv.className = 'palette-unit';
+                unitDiv.draggable = true;
+                unitDiv.dataset.template = template.code;
+                unitDiv.style.borderLeft = `4px solid ${colorMap[template.color]}`;
+                
+                unitDiv.innerHTML = `
+                    <div class="unit-code">${template.code}</div>
+                    <div class="unit-name">${template.name}</div>
+                    <div class="unit-tags">
+                        ${template.tags.map(tag => `<span class="unit-tag">${tag}</span>`).join('')}
+                    </div>
+                `;
+                
+                unitDiv.addEventListener('dragstart', handleDragStart);
+                unitDiv.addEventListener('dragend', handleDragEnd);
+                
+                palette.appendChild(unitDiv);
+            });
+        }
+
+        function renderTimeline() {
+            const grid = document.getElementById('timelineGrid');
+            grid.innerHTML = '';
+            
+            // Create swimlanes
+            const swimlanes = [
+                { id: 'core', label: 'Core Units (Main Teacher)' },
+                { id: 'specialist', label: 'Specialist Units (Other Teacher)' },
+                { id: 'project', label: 'Integrated Project' },
+                { id: 'capstone', label: 'Capstone & Assessment' }
+            ];
+            
+            swimlanes.forEach(swimlane => {
+                const swimlaneDiv = document.createElement('div');
+                swimlaneDiv.className = 'swimlane';
+                swimlaneDiv.dataset.swimlane = swimlane.id;
+                
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'swimlane-label';
+                labelDiv.textContent = swimlane.label;
+                swimlaneDiv.appendChild(labelDiv);
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'swimlane-content';
+                
+                // Create week slots
+                for (let week = 1; week <= 37; week++) {
+                    const slotDiv = document.createElement('div');
+                    slotDiv.className = 'week-slot';
+                    slotDiv.dataset.week = week;
+                    slotDiv.dataset.swimlane = swimlane.id;
+                    
+                    // Check if holiday
+                    const holiday = courseData.holidays.find(h => h.week === week);
+                    if (holiday) {
+                        slotDiv.classList.add('holiday');
+                    }
+                    
+                    // Make droppable
+                    slotDiv.addEventListener('dragover', handleDragOver);
+                    slotDiv.addEventListener('dragenter', handleDragEnter);
+                    slotDiv.addEventListener('dragleave', handleDragLeave);
+                    slotDiv.addEventListener('drop', handleDrop);
+                    
+                    contentDiv.appendChild(slotDiv);
+                }
+                
+                // Add project thread to project swimlane
+                if (swimlane.id === 'project') {
+                    const threadDiv = document.createElement('div');
+                    threadDiv.className = 'project-thread';
+                    
+                    // Add milestones
+                    courseData.projectMilestones.forEach(milestone => {
+                        const milestoneDiv = document.createElement('div');
+                        milestoneDiv.className = 'project-milestone';
+                        milestoneDiv.style.left = `calc(${(milestone.week - 1) * 150}px + 75px)`;
+                        milestoneDiv.title = milestone.label;
+                        threadDiv.appendChild(milestoneDiv);
+                    });
+                    
+                    contentDiv.appendChild(threadDiv);
+                }
+                
+                swimlaneDiv.appendChild(contentDiv);
+                grid.appendChild(swimlaneDiv);
+            });
+            
+            // Place units in timeline
+            currentUnits.forEach(unit => {
+                placeUnitInTimeline(unit);
+            });
+        }
+
+        function placeUnitInTimeline(unit) {
+            const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+            const swimlane = getSwimlaneForUnit(unit);
+            
+            weeks.forEach(week => {
+                const slot = document.querySelector(`.week-slot[data-week="${week}"][data-swimlane="${swimlane}"]`);
+                if (slot) {
+                    const unitDiv = createUnitBlock(unit, week);
+                    slot.appendChild(unitDiv);
+                }
+            });
+        }
+
+        function getSwimlaneForUnit(unit) {
+            if (unit.tags && unit.tags.includes('CAPSTONE')) return 'capstone';
+            if (unit.teacher === 'other') return 'specialist';
+            if (unit.code === 'INTEGRATION' || unit.code === 'PROJECT') return 'project';
+            return 'core';
+        }
+
+        function createUnitBlock(unit, week) {
+            const unitDiv = document.createElement('div');
+            unitDiv.className = 'unit-block';
+            unitDiv.dataset.unitId = unit.id;
+            unitDiv.dataset.week = week;
+            unitDiv.draggable = true;
+            
+            // Set color based on unit type
+            const color = colorMap[unit.color] || colorMap.foundational;
+            unitDiv.style.background = color;
+            unitDiv.style.borderLeft = `4px solid ${darkenColor(color, 30)}`;
+            
+            // Determine if this is multi-week
+            const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+            const isFirstWeek = week === Math.min(...weeks);
+            
+            unitDiv.innerHTML = `
+                <div class="unit-code">${unit.code}</div>
+                ${isFirstWeek ? `<div class="unit-name">${unit.name}</div>` : ''}
+                ${isFirstWeek && unit.tags && unit.tags.length > 0 ? 
+                    `<div class="unit-tags" style="margin-top: 5px;">
+                        ${unit.tags.map(tag => `<span class="unit-tag">${tag}</span>`).join('')}
+                    </div>` : ''}
+                ${weeks.length > 1 ? `<div class="unit-duration">${weeks.length}w</div>` : ''}
+            `;
+            
+            unitDiv.addEventListener('dragstart', handleDragStart);
+            unitDiv.addEventListener('dragend', handleDragEnd);
+            unitDiv.addEventListener('click', () => openUnitModal(unit.id));
+            
+            return unitDiv;
+        }
+
+        function darkenColor(color, percent) {
+            // Simplified color darkening for borders
+            return color.replace('rgb', 'rgba').replace(')', `, ${1 - percent/100})`);
+        }
+
+        // Drag and Drop Handlers
+        function handleDragStart(e) {
+            draggedUnit = this;
+            draggedFromPalette = this.classList.contains('palette-unit');
+            
+            if (draggedFromPalette) {
+                e.dataTransfer.setData('text/plain', this.dataset.template);
+            } else {
+                e.dataTransfer.setData('text/plain', this.dataset.unitId);
+            }
+            
+            setTimeout(() => {
+                this.classList.add('dragging');
+            }, 0);
+            
+            // Highlight droppable areas
+            document.querySelectorAll('.week-slot').forEach(slot => {
+                if (!slot.classList.contains('holiday')) {
+                    slot.classList.add('droppable');
+                }
+            });
+        }
+
+        function handleDragEnd() {
+            this.classList.remove('dragging');
+            
+            // Remove droppable highlights
+            document.querySelectorAll('.week-slot').forEach(slot => {
+                slot.classList.remove('droppable');
+            });
+            
+            draggedUnit = null;
+            draggedFromPalette = false;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            if (!this.classList.contains('holiday')) {
+                this.style.background = 'rgba(9, 132, 227, 0.1)';
+            }
+        }
+
+        function handleDragLeave() {
+            this.style.background = '';
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            this.style.background = '';
+            
+            const week = parseInt(this.dataset.week);
+            const swimlane = this.dataset.swimlane;
+            
+            if (draggedFromPalette) {
+                // Add new unit from palette
+                const templateCode = e.dataTransfer.getData('text/plain');
+                addUnitFromTemplate(templateCode, week, swimlane);
+            } else {
+                // Move existing unit
+                const unitId = parseInt(e.dataTransfer.getData('text/plain'));
+                moveUnit(unitId, week, swimlane);
+            }
+        }
+
+        function addUnitFromTemplate(templateCode, week, swimlane) {
+            const template = unitTemplates.find(t => t.code === templateCode);
+            if (!template) return;
+            
+            // Find the next available unit ID
+            const nextId = Math.max(...currentUnits.map(u => u.id), 0) + 1;
+            
+            const newUnit = {
+                id: nextId,
+                code: template.code === 'CUSTOM' ? `CUST${nextId}` : template.code,
+                name: template.name,
+                weeks: [week],
+                color: template.color,
+                tags: [...template.tags],
+                teacher: swimlane === 'specialist' ? 'other' : 'main',
+                notes: '',
+                resources: []
+            };
+            
+            currentUnits.push(newUnit);
+            renderTimeline();
+            
+            // Open modal to edit new unit
+            setTimeout(() => openUnitModal(nextId), 100);
+        }
+
+        function moveUnit(unitId, newWeek, newSwimlane) {
+            const unit = currentUnits.find(u => u.id === unitId);
+            if (!unit) return;
+            
+            // Check constraints for seasonal units
+            if (unit.tags && unit.tags.includes('SEASONAL') && newWeek > 10) {
+                if (!confirm("This is a seasonal unit best placed in Term 1. Move anyway?")) {
+                    renderTimeline();
+                    return;
+                }
+            }
+            
+            // Check constraints for safety units
+            if (unit.tags && unit.tags.includes('SAFETY') && newWeek > 2) {
+                if (!confirm("Safety units should be first. Move anyway?")) {
+                    renderTimeline();
+                    return;
+                }
+            }
+            
+            // Update unit weeks
+            unit.weeks = [newWeek];
+            
+            // Update teacher based on swimlane
+            if (newSwimlane === 'specialist') {
+                unit.teacher = 'other';
+                if (!unit.tags.includes('SPECIALIST')) {
+                    unit.tags.push('SPECIALIST');
+                }
+            } else if (unit.teacher === 'other' && newSwimlane !== 'specialist') {
+                unit.teacher = 'main';
+                unit.tags = unit.tags.filter(tag => tag !== 'SPECIALIST');
+            }
+            
+            renderTimeline();
+        }
+
+        function openUnitModal(unitId) {
+            const unit = currentUnits.find(u => u.id === unitId);
+            if (!unit) return;
+            
+            const modal = document.getElementById('unitModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = `Edit: ${unit.code} - ${unit.name}`;
+            
+            modalBody.innerHTML = `
+                <div class="form-group">
+                    <label for="unitCode">Unit Code</label>
+                    <input type="text" id="unitCode" value="${unit.code}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="unitName">Unit Name</label>
+                    <input type="text" id="unitName" value="${unit.name}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="unitWeeks">Weeks</label>
+                    <input type="text" id="unitWeeks" value="${Array.isArray(unit.weeks) ? unit.weeks.join(',') : unit.weeks}" placeholder="e.g., 1,2,3 or 5-7">
+                    <small style="color: #636e72;">Enter week numbers separated by commas or ranges (e.g., 5-7)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="unitColor">Unit Type/Color</label>
+                    <select id="unitColor">
+                        <option value="safety" ${unit.color === 'safety' ? 'selected' : ''}>Safety</option>
+                        <option value="foundational" ${unit.color === 'foundational' ? 'selected' : ''}>Foundational</option>
+                        <option value="practical" ${unit.color === 'practical' ? 'selected' : ''}>Practical</option>
+                        <option value="machinery" ${unit.color === 'machinery' ? 'selected' : ''}>Machinery</option>
+                        <option value="capstone" ${unit.color === 'capstone' ? 'selected' : ''}>Capstone</option>
+                        <option value="project" ${unit.color === 'project' ? 'selected' : ''}>Project</option>
+                        <option value="seasonal" ${unit.color === 'seasonal' ? 'selected' : ''}>Seasonal</option>
+                        <option value="specialist" ${unit.color === 'specialist' ? 'selected' : ''}>Specialist</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="unitTeacher">Teacher</label>
+                    <select id="unitTeacher">
+                        <option value="main" ${unit.teacher === 'main' ? 'selected' : ''}>Main Teacher</option>
+                        <option value="other" ${unit.teacher === 'other' ? 'selected' : ''}>Specialist Teacher</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="unitTags">Tags (comma separated)</label>
+                    <input type="text" id="unitTags" value="${unit.tags ? unit.tags.join(', ') : ''}" placeholder="SAFETY, SEASONAL, SPECIALIST">
+                </div>
+                
+                <div class="form-group">
+                    <label for="unitNotes">Notes</label>
+                    <textarea id="unitNotes" rows="4">${unit.notes || ''}</textarea>
+                </div>
+                
+                <div class="notes-section">
+                    <h4>Resources & Links</h4>
+                    <div id="resourcesList">
+                        ${unit.resources && unit.resources.length > 0 ? 
+                            unit.resources.map((res, index) => `
+                                <div class="resource-item">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <strong>${res.title}</strong>
+                                        <button onclick="removeResource(${unitId}, ${index})" style="background: none; border: none; color: #ff6b6b; cursor: pointer;">✕</button>
+                                    </div>
+                                    <div style="font-size: 12px; color: #636e72; margin-top: 5px;">${res.url}</div>
+                                    ${res.description ? `<div style="font-size: 12px; margin-top: 3px;">${res.description}</div>` : ''}
+                                </div>
+                            `).join('') : 
+                            '<p style="color: #636e72; font-size: 14px;">No resources added yet.</p>'
+                        }
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <h5>Add New Resource</h5>
+                        <div class="form-group">
+                            <input type="text" id="newResourceTitle" placeholder="Resource Title" style="margin-bottom: 10px;">
+                            <input type="text" id="newResourceUrl" placeholder="URL or Reference" style="margin-bottom: 10px;">
+                            <textarea id="newResourceDesc" placeholder="Description (optional)" rows="2"></textarea>
+                            <button onclick="addResource(${unitId})" style="margin-top: 10px; width: 100%;">Add Resource</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button onclick="saveUnitChanges(${unitId})" class="primary" style="flex: 1;">Save Changes</button>
+                    <button onclick="deleteUnit(${unitId})" style="flex: 1; background: #ff6b6b; color: white; border: none;">Delete Unit</button>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        // Unit modal functions
+        window.saveUnitChanges = function(unitId) {
+            const unit = currentUnits.find(u => u.id === unitId);
+            if (!unit) return;
+            
+            unit.code = document.getElementById('unitCode').value;
+            unit.name = document.getElementById('unitName').value;
+            
+            // Parse weeks input
+            const weeksInput = document.getElementById('unitWeeks').value;
+            if (weeksInput.includes('-')) {
+                const [start, end] = weeksInput.split('-').map(Number);
+                unit.weeks = Array.from({length: end - start + 1}, (_, i) => start + i);
+            } else if (weeksInput.includes(',')) {
+                unit.weeks = weeksInput.split(',').map(w => parseInt(w.trim())).filter(w => !isNaN(w));
+            } else {
+                unit.weeks = [parseInt(weeksInput) || 1];
+            }
+            
+            unit.color = document.getElementById('unitColor').value;
+            unit.teacher = document.getElementById('unitTeacher').value;
+            
+            // Parse tags
+            const tagsInput = document.getElementById('unitTags').value;
+            unit.tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+            
+            unit.notes = document.getElementById('unitNotes').value;
+            
+            // Close modal and re-render
+            document.getElementById('unitModal').style.display = 'none';
+            renderTimeline();
+        };
+
+        window.addResource = function(unitId) {
+            const unit = currentUnits.find(u => u.id === unitId);
+            if (!unit) return;
+            
+            const title = document.getElementById('newResourceTitle').value;
+            const url = document.getElementById('newResourceUrl').value;
+            const description = document.getElementById('newResourceDesc').value;
+            
+            if (!title || !url) {
+                alert('Please enter both title and URL');
+                return;
+            }
+            
+            if (!unit.resources) {
+                unit.resources = [];
+            }
+            
+            unit.resources.push({
+                title,
+                url,
+                description
+            });
+            
+            // Clear inputs
+            document.getElementById('newResourceTitle').value = '';
+            document.getElementById('newResourceUrl').value = '';
+            document.getElementById('newResourceDesc').value = '';
+            
+            // Re-open modal to show updated resources
+            openUnitModal(unitId);
+        };
+
+        window.removeResource = function(unitId, resourceIndex) {
+            const unit = currentUnits.find(u => u.id === unitId);
+            if (unit && unit.resources) {
+                unit.resources.splice(resourceIndex, 1);
+                openUnitModal(unitId);
+            }
+        };
+
+        window.deleteUnit = function(unitId) {
+            if (confirm('Are you sure you want to delete this unit?')) {
+                currentUnits = currentUnits.filter(u => u.id !== unitId);
+                document.getElementById('unitModal').style.display = 'none';
+                renderTimeline();
+            }
+        };
+
+        function setupEventListeners() {
+            // Modal close button
+            document.querySelector('.close-modal').addEventListener('click', function() {
+                document.getElementById('unitModal').style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            document.getElementById('unitModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+            
+            // Control buttons
+            document.getElementById('savePlan').addEventListener('click', saveCurrentPlan);
+            document.getElementById('resetPlan').addEventListener('click', resetToDefault);
+            document.getElementById('printPlan').addEventListener('click', printPlan);
+            document.getElementById('addCustomUnit').addEventListener('click', addCustomUnit);
+            
+            // View controls
+            document.getElementById('viewMode').addEventListener('change', function() {
+                // In a full implementation, this would change the view
+                alert(`View mode changed to: ${this.value}. Full implementation would adjust timeline display.`);
+            });
+            
+            document.getElementById('highlightMode').addEventListener('change', function() {
+                highlightUnits(this.value);
+            });
+        }
+
+        function saveCurrentPlan() {
+            const planName = prompt('Enter a name for this plan:', `Plan ${new Date().toLocaleDateString()}`);
+            if (!planName) return;
+            
+            const plan = {
+                id: Date.now().toString(),
+                name: planName,
+                date: new Date().toISOString(),
+                units: JSON.parse(JSON.stringify(currentUnits))
+            };
+            
+            // Save to localStorage
+            let savedPlans = JSON.parse(localStorage.getItem('conservationPlans')) || [];
+            savedPlans.push(plan);
+            localStorage.setItem('conservationPlans', JSON.stringify(savedPlans));
+            
+            loadSavedPlans();
+            alert(`Plan "${planName}" saved successfully!`);
+        }
+
+        function loadSavedPlans() {
+            const savedPlans = JSON.parse(localStorage.getItem('conservationPlans')) || [];
+            const listDiv = document.getElementById('savedPlansList');
+            
+            if (savedPlans.length === 0) {
+                listDiv.innerHTML = '<p style="color: #636e72; font-size: 14px;">No saved plans yet.</p>';
+                return;
+            }
+            
+            listDiv.innerHTML = savedPlans.map(plan => `
+                <div style="padding: 10px; margin-bottom: 10px; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #0984e3;">
+                    <div style="font-weight: 600; margin-bottom: 5px;">${plan.name}</div>
+                    <div style="font-size: 12px; color: #636e72; margin-bottom: 8px;">${new Date(plan.date).toLocaleDateString()}</div>
+                    <div style="display: flex; gap: 5px;">
+                        <button onclick="loadPlan('${plan.id}')" style="flex: 1; padding: 5px; font-size: 12px; background: #0984e3; color: white; border: none; border-radius: 4px;">Load</button>
+                        <button onclick="deletePlan('${plan.id}')" style="flex: 1; padding: 5px; font-size: 12px; background: #ff6b6b; color: white; border: none; border-radius: 4px;">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.loadPlan = function(planId) {
+            const savedPlans = JSON.parse(localStorage.getItem('conservationPlans')) || [];
+            const plan = savedPlans.find(p => p.id === planId);
+            
+            if (plan) {
+                currentUnits = JSON.parse(JSON.stringify(plan.units));
+                currentPlanId = planId;
+                renderTimeline();
+                alert(`Plan "${plan.name}" loaded successfully!`);
+            }
+        };
+
+        window.deletePlan = function(planId) {
+            if (confirm('Are you sure you want to delete this saved plan?')) {
+                let savedPlans = JSON.parse(localStorage.getItem('conservationPlans')) || [];
+                savedPlans = savedPlans.filter(p => p.id !== planId);
+                localStorage.setItem('conservationPlans', JSON.stringify(savedPlans));
+                loadSavedPlans();
+            }
+        };
+
+        function resetToDefault() {
+            if (confirm('Reset to default course sequence? Any unsaved changes will be lost.')) {
+                currentUnits = JSON.parse(JSON.stringify(defaultUnits));
+                currentPlanId = 'default';
+                renderTimeline();
+            }
+        }
+
+        function printPlan() {
+            // In a full implementation, this would generate a printer-friendly view
+            alert('Print view would generate a summary of the current plan. For now, use browser print (Ctrl+P) on the timeline.');
+        }
+
+        function addCustomUnit() {
+            // Add a custom unit template
+            const nextId = Math.max(...currentUnits.map(u => u.id), 0) + 1;
+            
+            const customUnit = {
+                id: nextId,
+                code: `CUST${nextId}`,
+                name: 'Custom Unit/Block',
+                weeks: [1],
+                color: 'foundational',
+                tags: ['CUSTOM'],
+                teacher: 'main',
+                notes: 'Custom added unit',
+                resources: []
+            };
+            
+            currentUnits.push(customUnit);
+            renderTimeline();
+            
+            // Open modal to edit
+            setTimeout(() => openUnitModal(nextId), 100);
+        }
+
+        function highlightUnits(mode) {
+            // Remove all highlights first
+            document.querySelectorAll('.unit-block').forEach(block => {
+                block.style.boxShadow = '';
+                block.style.transform = '';
+            });
+            
+            if (mode === 'none') return;
+            
+            // Apply highlights based on mode
+            currentUnits.forEach(unit => {
+                let shouldHighlight = false;
+                
+                switch(mode) {
+                    case 'specialist':
+                        shouldHighlight = unit.teacher === 'other' || (unit.tags && unit.tags.includes('SPECIALIST'));
+                        break;
+                    case 'safety':
+                        shouldHighlight = unit.tags && unit.tags.includes('SAFETY');
+                        break;
+                    case 'seasonal':
+                        shouldHighlight = unit.tags && unit.tags.includes('SEASONAL');
+                        break;
+                    case 'assessment':
+                        shouldHighlight = unit.code === 'AHCECR309' || unit.code === 'PROJECT' || unit.code === 'ADMIN';
+                        break;
+                }
+                
+                if (shouldHighlight) {
+                    const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+                    weeks.forEach(week => {
+                        const swimlane = getSwimlaneForUnit(unit);
+                        const block = document.querySelector(`.unit-block[data-unit-id="${unit.id}"][data-week="${week}"]`);
+                        if (block) {
+                            block.style.boxShadow = '0 0 0 3px rgba(255, 215, 0, 0.7)';
+                            block.style.transform = 'scale(1.05)';
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
