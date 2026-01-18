@@ -1248,12 +1248,15 @@ opacity: 0.8;
         
         function showSyncNotification(message) {
             const statusDiv = document.getElementById('syncStatus');
-            document.getElementById('syncMessage').textContent = message;
-            statusDiv.classList.add('show');
-            
-            setTimeout(() => {
-                statusDiv.classList.remove('show');
-            }, 3000);
+            const syncMessage = document.getElementById('syncMessage');
+            if (statusDiv && syncMessage) {
+                syncMessage.textContent = message;
+                statusDiv.classList.add('show');
+                
+                setTimeout(() => {
+                    statusDiv.classList.remove('show');
+                }, 3000);
+            }
         }
         
         function validateUnit(unit) {
@@ -1340,17 +1343,27 @@ opacity: 0.8;
             document.body.classList.remove('editor-view');
             document.body.classList.add('student-view');
             
-            // Update titles
-            document.getElementById('courseTitle').textContent = 'Course Schedule - Cert III Conservation & Ecosystem Management';
-            document.getElementById('courseSubtitle').textContent = 'Student View - 37-Week Plan';
-            document.getElementById('courseDescription').textContent = 'Interactive course timeline - Updated automatically';
-            document.getElementById('viewModeIndicator').textContent = 'Student View';
-            document.getElementById('footerText').textContent = 'This view updates automatically as your teacher makes changes to the course schedule.';
+            // Update titles - check if elements exist first
+            const courseTitle = document.getElementById('courseTitle');
+            const courseSubtitle = document.getElementById('courseSubtitle');
+            const courseDescription = document.getElementById('courseDescription');
+            const viewModeIndicator = document.getElementById('viewModeIndicator');
+            const footerText = document.getElementById('footerText');
             
-            // Hide editor elements
-            document.querySelector('.controls').style.display = 'none';
-            document.querySelector('.unit-palette').style.display = 'none';
-            document.querySelector('.legend').style.display = 'none';
+            if (courseTitle) courseTitle.textContent = 'Course Schedule - Cert III Conservation & Ecosystem Management';
+            if (courseSubtitle) courseSubtitle.textContent = 'Student View - 37-Week Plan';
+            if (courseDescription) courseDescription.textContent = 'Interactive course timeline - Updated automatically';
+            if (viewModeIndicator) viewModeIndicator.textContent = 'Student View';
+            if (footerText) footerText.textContent = 'This view updates automatically as your teacher makes changes to the course schedule.';
+            
+            // Hide editor elements - check if they exist first
+            const controls = document.querySelector('.controls');
+            const unitPalette = document.querySelector('.unit-palette');
+            const legend = document.querySelector('.legend');
+            
+            if (controls) controls.style.display = 'none';
+            if (unitPalette) unitPalette.style.display = 'none';
+            if (legend) legend.style.display = 'none';
             
             // Initialize student view
             initializeTimeline();
@@ -1368,6 +1381,8 @@ opacity: 0.8;
         
         function renderStudentTimeline() {
             const grid = document.getElementById('timelineGrid');
+            if (!grid) return;
+            
             grid.innerHTML = '';
             
             // Create ONE swimlane for student view (all units go here)
@@ -1420,6 +1435,7 @@ opacity: 0.8;
         
         function createProjectSwimlane() {
             const grid = document.getElementById('timelineGrid');
+            if (!grid) return;
             
             const projectSwimlaneDiv = document.createElement('div');
             projectSwimlaneDiv.className = 'swimlane';
@@ -1439,8 +1455,6 @@ opacity: 0.8;
                 slotDiv.className = 'week-slot';
                 slotDiv.dataset.week = week;
                 slotDiv.dataset.swimlane = 'student-project';
-                
-                // No holiday checking
                 
                 contentDiv.appendChild(slotDiv);
             }
@@ -1551,6 +1565,8 @@ opacity: 0.8;
         
         function createTermOverviews() {
             const container = document.getElementById('studentTermOverviews');
+            if (!container) return;
+            
             container.innerHTML = '';
             
             courseData.terms.forEach(term => {
@@ -1596,7 +1612,7 @@ opacity: 0.8;
             });
             
             // Show term overviews in student view
-            if (isStudentView) {
+            if (isStudentView && container) {
                 container.style.display = 'block';
             }
         }
@@ -1605,6 +1621,8 @@ opacity: 0.8;
             const modal = document.getElementById('unitModal');
             const modalTitle = document.getElementById('modalTitle');
             const modalBody = document.getElementById('modalBody');
+            
+            if (!modal || !modalTitle || !modalBody) return;
             
             modalTitle.textContent = `${unit.code} - ${unit.name}`;
             
@@ -1674,6 +1692,8 @@ opacity: 0.8;
         }
         
         function setupStudentProgress() {
+            if (!sharedPlanId) return;
+            
             const progressKey = 'studentProgress_' + sharedPlanId;
             let progress = {
                 completedUnits: [],
@@ -1783,7 +1803,13 @@ opacity: 0.8;
         
         function initializeTimeline() {
             const weekHeaders = document.getElementById('weekHeaders');
+            if (!weekHeaders) return;
+            
             weekHeaders.innerHTML = '';
+            
+            // Calculate week width based on view mode
+            const isStudent = document.body.classList.contains('student-view');
+            const weekWidth = isStudent ? 120 : 150;
             
             // Add empty column for swimlane alignment
             const spacerDiv = document.createElement('div');
@@ -1791,10 +1817,6 @@ opacity: 0.8;
             spacerDiv.style.cssText = 'width: 120px; background: #f8f9fa; border-right: 2px solid #ddd;';
             spacerDiv.innerHTML = '&nbsp;';
             weekHeaders.appendChild(spacerDiv);
-            
-            // Calculate week width based on view mode
-            const isStudent = document.body.classList.contains('student-view');
-            const weekWidth = isStudent ? 120 : 150;
             
             // Create week headers
             for (let week = 1; week <= 37; week++) {
@@ -1814,6 +1836,8 @@ opacity: 0.8;
         
         function renderPalette() {
             const palette = document.getElementById('paletteUnits');
+            if (!palette) return;
+            
             palette.innerHTML = '';
             
             unitTemplates.forEach(template => {
@@ -1840,6 +1864,8 @@ opacity: 0.8;
         
         function renderTimeline() {
             const grid = document.getElementById('timelineGrid');
+            if (!grid) return;
+            
             grid.innerHTML = '';
             
             // Create swimlanes
@@ -1928,7 +1954,10 @@ opacity: 0.8;
             });
             
             // Hide student term overviews in editor view
-            document.getElementById('studentTermOverviews').style.display = 'none';
+            const studentTermOverviews = document.getElementById('studentTermOverviews');
+            if (studentTermOverviews) {
+                studentTermOverviews.style.display = 'none';
+            }
         }
         
         function getSwimlaneForUnit(unit) {
@@ -2149,6 +2178,8 @@ opacity: 0.8;
             const modalTitle = document.getElementById('modalTitle');
             const modalBody = document.getElementById('modalBody');
             
+            if (!modal || !modalTitle || !modalBody) return;
+            
             modalTitle.textContent = `Edit: ${unit.code} - ${unit.name}`;
             
             modalBody.innerHTML = `
@@ -2276,7 +2307,8 @@ opacity: 0.8;
             }
             
             // Close modal and re-render
-            document.getElementById('unitModal').style.display = 'none';
+            const modal = document.getElementById('unitModal');
+            if (modal) modal.style.display = 'none';
             renderTimeline();
             
             // Update shared plan
@@ -2332,7 +2364,8 @@ opacity: 0.8;
                 saveToHistory('delete_unit');
                 
                 currentUnits = currentUnits.filter(u => u.id !== unitId);
-                document.getElementById('unitModal').style.display = 'none';
+                const modal = document.getElementById('unitModal');
+                if (modal) modal.style.display = 'none';
                 renderTimeline();
                 
                 // Update shared plan
@@ -2347,54 +2380,90 @@ opacity: 0.8;
         
         function setupEventListeners() {
             // Modal close button
-            document.querySelector('.close-modal').addEventListener('click', function() {
-                document.getElementById('unitModal').style.display = 'none';
-            });
+            const closeModalBtn = document.querySelector('.close-modal');
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
+                    const modal = document.getElementById('unitModal');
+                    if (modal) modal.style.display = 'none';
+                });
+            }
             
             // Close modal when clicking outside
-            document.getElementById('unitModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.style.display = 'none';
-                }
-            });
+            const modal = document.getElementById('unitModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            }
             
             // Control buttons
-            document.getElementById('savePlan').addEventListener('click', saveCurrentPlan);
-            document.getElementById('sharePlan').addEventListener('click', showShareDialog);
-            document.getElementById('resetPlan').addEventListener('click', resetToDefault);
-            document.getElementById('printPlan').addEventListener('click', printPlan);
-            document.getElementById('exportPlan').addEventListener('click', exportPlan);
-            document.getElementById('addCustomUnit').addEventListener('click', addCustomUnit);
-            document.getElementById('importPlanBtn').addEventListener('click', importPlanFromFile);
+            const savePlanBtn = document.getElementById('savePlan');
+            if (savePlanBtn) savePlanBtn.addEventListener('click', saveCurrentPlan);
+            
+            const sharePlanBtn = document.getElementById('sharePlan');
+            if (sharePlanBtn) sharePlanBtn.addEventListener('click', showShareDialog);
+            
+            const resetPlanBtn = document.getElementById('resetPlan');
+            if (resetPlanBtn) resetPlanBtn.addEventListener('click', resetToDefault);
+            
+            const printPlanBtn = document.getElementById('printPlan');
+            if (printPlanBtn) printPlanBtn.addEventListener('click', printPlan);
+            
+            const exportPlanBtn = document.getElementById('exportPlan');
+            if (exportPlanBtn) exportPlanBtn.addEventListener('click', exportPlan);
+            
+            const addCustomUnitBtn = document.getElementById('addCustomUnit');
+            if (addCustomUnitBtn) addCustomUnitBtn.addEventListener('click', addCustomUnit);
+            
+            const importPlanBtn = document.getElementById('importPlanBtn');
+            if (importPlanBtn) importPlanBtn.addEventListener('click', importPlanFromFile);
             
             // Import file input
-            document.getElementById('importPlanInput').addEventListener('change', function(e) {
-                if (e.target.files.length > 0) {
-                    importPlan(e.target.files[0]);
-                }
-            });
+            const importPlanInput = document.getElementById('importPlanInput');
+            if (importPlanInput) {
+                importPlanInput.addEventListener('change', function(e) {
+                    if (e.target.files.length > 0) {
+                        importPlan(e.target.files[0]);
+                    }
+                });
+            }
             
             // Copy share link button
-            document.getElementById('copyShareLinkBtn').addEventListener('click', copyShareLink);
+            const copyShareLinkBtn = document.getElementById('copyShareLinkBtn');
+            if (copyShareLinkBtn) copyShareLinkBtn.addEventListener('click', copyShareLink);
             
             // View controls
-            document.getElementById('viewMode').addEventListener('change', function() {
-                if (this.value === 'term') {
-                    createTermOverviews();
-                    document.querySelector('.course-timeline').style.display = 'none';
-                    document.getElementById('studentTermOverviews').style.display = 'block';
-                } else {
-                    document.querySelector('.course-timeline').style.display = 'block';
-                    document.getElementById('studentTermOverviews').style.display = 'none';
-                }
-            });
+            const viewModeSelect = document.getElementById('viewMode');
+            if (viewModeSelect) {
+                viewModeSelect.addEventListener('change', function() {
+                    const courseTimeline = document.querySelector('.course-timeline');
+                    const studentTermOverviews = document.getElementById('studentTermOverviews');
+                    
+                    if (this.value === 'term') {
+                        createTermOverviews();
+                        if (courseTimeline) courseTimeline.style.display = 'none';
+                        if (studentTermOverviews) studentTermOverviews.style.display = 'block';
+                    } else {
+                        if (courseTimeline) courseTimeline.style.display = 'block';
+                        if (studentTermOverviews) studentTermOverviews.style.display = 'none';
+                    }
+                });
+            }
             
-            document.getElementById('highlightMode').addEventListener('change', function() {
-                highlightUnits(this.value);
-            });
+            const highlightModeSelect = document.getElementById('highlightMode');
+            if (highlightModeSelect) {
+                highlightModeSelect.addEventListener('change', function() {
+                    highlightUnits(this.value);
+                });
+            }
             
             // View toggle
-            document.getElementById('toggleView').addEventListener('click', toggleViewMode);
+            const toggleViewBtn = document.getElementById('toggleView');
+            if (toggleViewBtn) {
+                toggleViewBtn.addEventListener('click', toggleViewMode);
+            }
             
             // Close share dialog when clicking outside
             document.addEventListener('click', function(e) {
@@ -2402,7 +2471,7 @@ opacity: 0.8;
                 const toggleButton = document.getElementById('toggleView');
                 const shareButton = document.getElementById('sharePlan');
                 
-                if (shareContainer.classList.contains('show') && 
+                if (shareContainer && shareContainer.classList.contains('show') && 
                     !shareContainer.contains(e.target) && 
                     !toggleButton.contains(e.target) &&
                     !shareButton.contains(e.target)) {
@@ -2441,6 +2510,8 @@ opacity: 0.8;
         function loadSavedPlans() {
             const savedPlans = JSON.parse(localStorage.getItem('conservationPlans')) || [];
             const listDiv = document.getElementById('savedPlansList');
+            
+            if (!listDiv) return;
             
             if (savedPlans.length === 0) {
                 listDiv.innerHTML = '<p style="color: #636e72; font-size: 14px;">No saved plans yet.</p>';
@@ -2628,7 +2699,8 @@ opacity: 0.8;
                         updateSharedPlan();
                         
                         if (data.metadata && data.metadata.title) {
-                            document.getElementById('courseTitle').textContent = data.metadata.title;
+                            const courseTitle = document.getElementById('courseTitle');
+                            if (courseTitle) courseTitle.textContent = data.metadata.title;
                         }
                         
                         showSyncNotification('Plan imported successfully');
@@ -2645,7 +2717,7 @@ opacity: 0.8;
         
         function importPlanFromFile() {
             const input = document.getElementById('importPlanInput');
-            if (input.files.length > 0) {
+            if (input && input.files.length > 0) {
                 importPlan(input.files[0]);
                 input.value = ''; // Reset input
             }
@@ -2720,6 +2792,8 @@ opacity: 0.8;
             const shareInput = document.getElementById('shareLink');
             const shareContainer = document.getElementById('shareLinkContainer');
             
+            if (!shareInput || !shareContainer) return;
+            
             shareInput.value = shareUrl;
             shareContainer.classList.add('show');
             
@@ -2737,6 +2811,8 @@ opacity: 0.8;
         
         function copyShareLink() {
             const shareInput = document.getElementById('shareLink');
+            if (!shareInput) return;
+            
             shareInput.select();
             shareInput.setSelectionRange(0, 99999);
             
@@ -2755,6 +2831,7 @@ opacity: 0.8;
         
         function generateQRCode(url) {
             const qrContainer = document.getElementById('qrCode');
+            if (!qrContainer) return;
             
             // Simple QR code using Google Charts API
             qrContainer.innerHTML = `
@@ -2789,12 +2866,14 @@ opacity: 0.8;
             const viewIcon = document.getElementById('viewIcon');
             const viewLabel = document.getElementById('viewLabel');
             
-            if (isStudentView) {
-                viewIcon.textContent = '✏️';
-                viewLabel.textContent = 'Editor View';
-            } else {
-                viewIcon.textContent = '👁️';
-                viewLabel.textContent = 'Student View';
+            if (toggleButton && viewIcon && viewLabel) {
+                if (isStudentView) {
+                    viewIcon.textContent = '✏️';
+                    viewLabel.textContent = 'Editor View';
+                } else {
+                    viewIcon.textContent = '👁️';
+                    viewLabel.textContent = 'Student View';
+                }
             }
         }
         
@@ -2807,8 +2886,10 @@ opacity: 0.8;
                 
                 switch(e.key) {
                     case 'Escape':
-                        document.getElementById('unitModal').style.display = 'none';
-                        document.getElementById('shareLinkContainer').classList.remove('show');
+                        const modal = document.getElementById('unitModal');
+                        if (modal) modal.style.display = 'none';
+                        const shareContainer = document.getElementById('shareLinkContainer');
+                        if (shareContainer) shareContainer.classList.remove('show');
                         break;
                     case 'z':
                     case 'Z':
