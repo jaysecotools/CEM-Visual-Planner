@@ -17,15 +17,19 @@
     --color-foundational: #4ecdc4;
     --color-practical: #45b7d1;
     --color-machinery: #96ceb4;
-    --color-capstone: #ffeaa7;
+    --color-Apex: #ffeaa7;
     --color-project: #a29bfe;
     --color-specialist: #fd79a8;
     --color-seasonal: #55efc4;
     --color-holiday: #dfe6e9;
     --color-term-break: #b2bec3;
     --color-grid: #636e72;
+    --color-easter: #fab1a0;
+    --color-teacher-training: #a29bfe;
+    --color-leave: #fd79a8;
     --week-width: 150px;
     --student-week-width: 120px;
+    --total-weeks: 37;
 }
 
 body {
@@ -78,7 +82,7 @@ body {
     color: #2d3436;
 }
 
-select, button {
+select, button, input {
     padding: 10px 15px;
     border-radius: 6px;
     border: 1px solid #ddd;
@@ -88,7 +92,7 @@ select, button {
     transition: all 0.2s;
 }
 
-select:hover, button:hover {
+select:hover, button:hover, input:hover {
     border-color: #0984e3;
 }
 
@@ -101,6 +105,28 @@ button.primary {
 
 button.primary:hover {
     background: #0770c4;
+}
+
+button.warning {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+button.warning:hover {
+    background: #ff5252;
+}
+
+button.success {
+    background: #00b894;
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+button.success:hover {
+    background: #00a085;
 }
 
 .legend {
@@ -138,14 +164,13 @@ button.primary:hover {
     min-height: 80vh;
 }
 
-/* UPDATED: Reduced height of unit palette with scrollbar */
 .unit-palette {
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    max-height: 800px; /* Reduced height to match grid */
-    overflow-y: auto; /* Add vertical scrollbar */
+    max-height: 900px;
+    overflow-y: auto;
 }
 
 .unit-palette h3 {
@@ -197,28 +222,25 @@ button.primary:hover {
     color: #495057;
 }
 
-/* UPDATED: Added scrollbar for the course timeline */
 .course-timeline {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    overflow: auto; /* Changed to auto for both horizontal and vertical scrolling */
+    overflow: auto;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     position: relative;
-    max-height: 800px; /* Match the palette height */
+    max-height: 900px;
 }
 
-/* New: Main timeline container that holds everything */
 .timeline-container {
-    min-width: calc(37 * var(--week-width));
+    min-width: calc(var(--total-weeks, 37) * var(--week-width));
     position: relative;
 }
 
 .student-view .timeline-container {
-    min-width: calc(37 * var(--student-week-width));
+    min-width: calc(var(--total-weeks, 37) * var(--student-week-width));
 }
 
-/* Updated: Headers container - now fixed horizontally too */
 .timeline-headers-container {
     position: sticky;
     left: 0;
@@ -227,11 +249,11 @@ button.primary:hover {
     z-index: 20;
     padding-bottom: 5px;
     width: fit-content;
-    min-width: calc(37 * var(--week-width));
+    min-width: calc(var(--total-weeks, 37) * var(--week-width));
 }
 
 .student-view .timeline-headers-container {
-    min-width: calc(37 * var(--student-week-width));
+    min-width: calc(var(--total-weeks, 37) * var(--student-week-width));
 }
 
 .timeline-header {
@@ -240,7 +262,6 @@ button.primary:hover {
     position: relative;
 }
 
-/* New: Spacer for term header to align with swimlane labels */
 .term-header-spacer {
     flex-shrink: 0;
     background: #f8f9fa;
@@ -259,39 +280,11 @@ button.primary:hover {
     position: relative;
 }
 
-/* Updated: Term column widths to match week widths */
-.term-column:nth-child(1) { 
-    width: calc(10 * var(--week-width));
-}
-.term-column:nth-child(2) { 
-    width: calc(10 * var(--week-width));
-}
-.term-column:nth-child(3) { 
-    width: calc(10 * var(--week-width));
-}
-.term-column:nth-child(4) { 
-    width: calc(7 * var(--week-width));
-}
-
-.student-view .term-column:nth-child(1) { 
-    width: calc(10 * var(--student-week-width));
-}
-.student-view .term-column:nth-child(2) { 
-    width: calc(10 * var(--student-week-width));
-}
-.student-view .term-column:nth-child(3) { 
-    width: calc(10 * var(--student-week-width));
-}
-.student-view .term-column:nth-child(4) { 
-    width: calc(7 * var(--student-week-width));
-}
-
 .week-header {
     display: flex;
     position: relative;
 }
 
-/* Week cell width consistency */
 .week-cell {
     flex-shrink: 0;
     width: var(--week-width);
@@ -313,37 +306,33 @@ button.primary:hover {
     margin-bottom: 5px;
 }
 
-/* UPDATED: Commented out week dates/months */
 .week-dates {
     font-size: 12px;
     color: #636e72;
-    display: none; /* Hide month indicators */
+    display: none;
 }
 
-/* Updated: Timeline grid container */
 .timeline-grid-container {
     position: relative;
     width: fit-content;
-    min-width: calc(37 * var(--week-width));
+    min-width: calc(var(--total-weeks, 37) * var(--week-width));
 }
 
 .student-view .timeline-grid-container {
-    min-width: calc(37 * var(--student-week-width));
+    min-width: calc(var(--total-weeks, 37) * var(--student-week-width));
 }
 
-/* Updated: Timeline grid */
 .timeline-grid {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: calc(37 * var(--week-width));
+    width: calc(var(--total-weeks, 37) * var(--week-width));
 }
 
 .student-view .timeline-grid {
-    width: calc(37 * var(--student-week-width));
+    width: calc(var(--total-weeks, 37) * var(--student-week-width));
 }
 
-/* FIXED: Swimlane layout with labels in separate column */
 .swimlane {
     display: flex;
     min-height: 100px;
@@ -366,22 +355,20 @@ button.primary:hover {
     left: 0;
     z-index: 15;
     background: #f8f9fa;
-opacity: 0.8;
+    opacity: 0.8;
 }
 
-/* Updated: Swimlane content width calculation */
 .swimlane-content {
     display: flex;
     flex: 1;
     position: relative;
-    min-width: calc(37 * var(--week-width) - 120px);
+    min-width: calc(var(--total-weeks, 37) * var(--week-width) - 120px);
 }
 
 .student-view .swimlane-content {
-    min-width: calc(37 * var(--student-week-width) - 120px);
+    min-width: calc(var(--total-weeks, 37) * var(--student-week-width) - 120px);
 }
 
-/* Week slot width consistency */
 .week-slot {
     flex-shrink: 0;
     width: var(--week-width);
@@ -403,6 +390,17 @@ opacity: 0.8;
 
 .droppable {
     background: rgba(9, 132, 227, 0.05);
+}
+
+.blocked-week {
+    position: relative;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.1) 10px,
+        rgba(0, 0, 0, 0.05) 10px,
+        rgba(0, 0, 0, 0.05) 20px
+    ) !important;
 }
 
 .unit-block {
@@ -573,7 +571,6 @@ opacity: 0.8;
     border-top: 1px solid #e9ecef;
 }
 
-/* Student View specific styles */
 .student-view .header {
     background: linear-gradient(135deg, #0984e3 0%, #2d3436 100%);
 }
@@ -734,7 +731,6 @@ opacity: 0.8;
     display: flex;
 }
 
-/* Progress tracking */
 .progress-indicator {
     position: absolute;
     bottom: 5px;
@@ -750,7 +746,6 @@ opacity: 0.8;
     background: #00b894;
 }
 
-/* Print styles */
 @media print {
     .view-toggle,
     .share-link-container,
@@ -786,7 +781,6 @@ opacity: 0.8;
     }
 }
 
-/* Updated: Responsive adjustments */
 @media (max-width: 1200px) {
     .container {
         grid-template-columns: 1fr;
@@ -795,11 +789,11 @@ opacity: 0.8;
     .timeline-container,
     .timeline-headers-container,
     .timeline-grid-container {
-        min-width: calc(37 * 120px);
+        min-width: calc(var(--total-weeks, 37) * 120px);
     }
     
     .timeline-grid {
-        width: calc(37 * 120px);
+        width: calc(var(--total-weeks, 37) * 120px);
     }
     
     .week-cell {
@@ -810,21 +804,8 @@ opacity: 0.8;
         width: 120px !important;
     }
     
-    .term-column:nth-child(1) { 
-        width: calc(10 * 120px) !important;
-    }
-    .term-column:nth-child(2) { 
-        width: calc(10 * 120px) !important;
-    }
-    .term-column:nth-child(3) { 
-        width: calc(10 * 120px) !important;
-    }
-    .term-column:nth-child(4) { 
-        width: calc(7 * 120px) !important;
-    }
-    
     .swimlane-content {
-        min-width: calc(37 * 120px - 120px);
+        min-width: calc(var(--total-weeks, 37) * 120px - 120px);
     }
 }
 
@@ -836,11 +817,11 @@ opacity: 0.8;
     .timeline-container,
     .timeline-headers-container,
     .timeline-grid-container {
-        min-width: calc(37 * 100px);
+        min-width: calc(var(--total-weeks, 37) * 100px);
     }
     
     .timeline-grid {
-        width: calc(37 * 100px);
+        width: calc(var(--total-weeks, 37) * 100px);
     }
     
     .week-cell {
@@ -851,21 +832,8 @@ opacity: 0.8;
         width: 100px !important;
     }
     
-    .term-column:nth-child(1) { 
-        width: calc(10 * 100px) !important;
-    }
-    .term-column:nth-child(2) { 
-        width: calc(10 * 100px) !important;
-    }
-    .term-column:nth-child(3) { 
-        width: calc(10 * 100px) !important;
-    }
-    .term-column:nth-child(4) { 
-        width: calc(7 * 100px) !important;
-    }
-    
     .swimlane-content {
-        min-width: calc(37 * 100px - 120px);
+        min-width: calc(var(--total-weeks, 37) * 100px - 120px);
     }
     
     .term-column {
@@ -880,7 +848,6 @@ opacity: 0.8;
     }
 }
 
-/* Empty week slot indicator */
 .empty-slot {
     font-size: 11px;
     color: #b2bec3;
@@ -919,7 +886,7 @@ opacity: 0.8;
     
     <div class="header">
         <h1 id="courseTitle">Certificate III in Conservation & Ecosystem Management</h1>
-        <div class="subtitle" id="courseSubtitle">37-Week Course Sequencing Tool | <span id="viewModeIndicator">Interactive Planner</span></div>
+        <div class="subtitle" id="courseSubtitle">Course Sequencing Tool | <span id="viewModeIndicator">Interactive Planner</span></div>
         <div style="font-size: 14px; opacity: 0.8;" id="courseDescription">
             Drag units to adjust sequence | Click units to edit details | Save/load your custom plans
         </div>
@@ -946,6 +913,25 @@ opacity: 0.8;
             </select>
         </div>
         
+        <div class="control-group">
+            <label for="weekBlocking">Block Weeks</label>
+            <select id="weekBlocking">
+                <option value="">Select action...</option>
+                <option value="easter">Mark as Easter Break</option>
+                <option value="term-break">Mark as Term Break</option>
+                <option value="training">Mark as Teacher Training</option>
+                <option value="leave">Mark as Leave</option>
+                <option value="clear">Clear Blocking</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="weekRange">Week Range</label>
+            <input type="text" id="weekRange" placeholder="e.g., 5-7 or 12,13,14" style="padding: 10px; width: 150px;">
+        </div>
+        
+        <button id="applyBlocking" class="primary">Apply</button>
+        
         <div style="flex: 1;"></div>
         
         <button class="primary" id="savePlan">Save Current Plan</button>
@@ -953,6 +939,21 @@ opacity: 0.8;
         <button id="resetPlan">Reset to Default</button>
         <button id="printPlan">Print View</button>
         <button id="exportPlan">Export Plan</button>
+        <button id="clearTimetable" class="warning">Clear Timetable</button>
+        
+        <div class="control-group">
+            <label>Manage Weeks</label>
+            <div style="display: flex; gap: 5px; flex-direction: column;">
+                <div style="display: flex; gap: 5px;">
+                    <button id="addWeekBtn" class="success" style="flex: 1;">Add Week</button>
+                    <button id="removeWeekBtn" class="warning" style="flex: 1;">Remove Week</button>
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <button id="addWeekToTermBtn" class="success" style="flex: 1;">Add to Term</button>
+                    <button id="removeWeekFromTermBtn" class="warning" style="flex: 1;">Remove from Term</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="legend">
@@ -973,12 +974,12 @@ opacity: 0.8;
             <span>Machinery Units</span>
         </div>
         <div class="legend-item">
-            <div class="legend-color" style="background: var(--color-capstone);"></div>
-            <span>Capstone Units</span>
+            <div class="legend-color" style="background: var(--color-Apex);"></div>
+            <span>Apex Units</span>
         </div>
         <div class="legend-item">
             <div class="legend-color" style="background: var(--color-specialist);"></div>
-            <span>Specialist Teacher</span>
+            <span>Other Teacher</span>
         </div>
         <div class="legend-item">
             <div class="legend-color" style="background: var(--color-seasonal);"></div>
@@ -987,6 +988,22 @@ opacity: 0.8;
         <div class="legend-item">
             <div class="legend-color" style="background: var(--color-project);"></div>
             <span>Integrated Project</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-easter);"></div>
+            <span>Easter Break</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-teacher-training);"></div>
+            <span>Teacher Training</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-leave);"></div>
+            <span>Leave</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--color-term-break);"></div>
+            <span>Term Break</span>
         </div>
     </div>
 
@@ -1017,22 +1034,12 @@ opacity: 0.8;
         </div>
 
         <div class="course-timeline">
-            <!-- Updated: Single container that moves everything together -->
             <div class="timeline-container">
-                <!-- Fixed headers section -->
                 <div class="timeline-headers-container">
-                    <!-- Term headers -->
-                    <div class="timeline-header">
-                        <div class="term-header-spacer" style="width: 120px;">
-                            &nbsp; <!-- Empty space for swimlane labels -->
-                        </div>
-                        <div class="term-column">Term 1 (Weeks 1-10)</div>
-                        <div class="term-column">Term 2 (Weeks 11-20)</div>
-                        <div class="term-column">Term 3 (Weeks 21-30)</div>
-                        <div class="term-column">Term 4 (Weeks 31-37)</div>
+                    <div class="timeline-header" id="termHeaders">
+                        <!-- Term headers will be populated by JavaScript -->
                     </div>
                     
-                    <!-- Week headers -->
                     <div class="week-header" id="weekHeaders">
                         <!-- Week 0 column for swimlane alignment -->
                         <div class="week-cell" style="width: 120px; background: #f8f9fa; border-right: 2px solid #ddd;">
@@ -1042,7 +1049,6 @@ opacity: 0.8;
                     </div>
                 </div>
                 
-                <!-- Updated: Timeline grid with swimlane labels -->
                 <div class="timeline-grid-container">
                     <div class="timeline-grid" id="timelineGrid">
                         <!-- Timeline grid will be populated by JavaScript -->
@@ -1051,7 +1057,6 @@ opacity: 0.8;
             </div>
         </div>
         
-        <!-- Student View Term Overviews (hidden in editor view) -->
         <div id="studentTermOverviews" style="display: none;">
             <!-- Will be populated for student view -->
         </div>
@@ -1069,8 +1074,20 @@ opacity: 0.8;
         </div>
     </div>
 
+    <div class="modal" id="termModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Manage Term</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="termModalBody">
+                <!-- Term management will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <div class="footer">
-        <p>Course Mapping Tool v2.1 | Designed for Cert III Conservation & Ecosystem Management | 37 Teaching Weeks (10 + 10 + 10 + 7)</p>
+        <p>Course Mapping Tool v2.3 | Designed for Cert III Conservation & Ecosystem Management | <span id="totalWeeksDisplay">37</span> Teaching Weeks</p>
         <p style="font-size: 12px; margin-top: 10px;" id="footerText">
             Drag units to adjust sequence. Seasonal units have constraints. Click units to add notes and resources.
         </p>
@@ -1082,15 +1099,15 @@ opacity: 0.8;
     <script>
         // ========== GLOBAL VARIABLES AND CONSTANTS ==========
         
-        // Course data structure - REMOVED HOLIDAYS
-        const courseData = {
+        // Dynamic course data structure
+        let dynamicCourseData = {
+            totalWeeks: 37,
             terms: [
                 { number: 1, weeks: 10, startWeek: 1, name: "Safety, Foundations & Summer Harvest" },
                 { number: 2, weeks: 10, startWeek: 11, name: "Practical Skills & Application" },
                 { number: 3, weeks: 10, startWeek: 21, name: "Machinery & Advanced Integration" },
-                { number: 4, weeks: 7, startWeek: 31, name: "Capstone & Finalisation" }
+                { number: 4, weeks: 7, startWeek: 31, name: "Apex & Finalisation" }
             ],
-            // REMOVED holidays array
             projectMilestones: [
                 { week: 18, label: "Project Start" },
                 { week: 25, label: "Phase 2" },
@@ -1125,7 +1142,7 @@ opacity: 0.8;
             { id: 17, code: "INTEGRATION", name: "Skill Integration & Project Work", weeks: [28, 29, 30], color: "project", tags: ["FLEXIBLE"], teacher: "main", notes: "Buffer for weather/adaptation" },
             
             // Term 4
-            { id: 18, code: "AHCECR309", name: "Conduct ecological site inspection", weeks: [31, 32, 33], color: "capstone", tags: ["CAPSTONE"], teacher: "main", notes: "Synthesis of all skills" },
+            { id: 18, code: "AHCECR309", name: "Conduct ecological site inspection", weeks: [31, 32, 33], color: "Apex", tags: ["Apex"], teacher: "main", notes: "Synthesis of all skills" },
             { id: 19, code: "PROJECT", name: "Final Project Phase", weeks: [34, 35, 36], color: "project", tags: [], teacher: "main", notes: "Complete integrated project" },
             { id: 20, code: "ADMIN", name: "Portfolio Finalisation", weeks: [37], color: "safety", tags: [], teacher: "main", notes: "Verification and closure" }
         ];
@@ -1147,7 +1164,7 @@ opacity: 0.8;
             { code: "AHCLPW313", name: "Water sampling & testing", color: "practical", tags: ["SEASONAL"], defaultWeeks: 3 },
             { code: "AHCMOM213", name: "Operate chainsaw", color: "machinery", tags: ["SPECIALIST"], defaultWeeks: 3 },
             { code: "AHCMOM216", name: "Operate SSUV", color: "machinery", tags: ["SPECIALIST"], defaultWeeks: 3 },
-            { code: "AHCECR309", name: "Conduct ecological site inspection", color: "capstone", tags: ["CAPSTONE"], defaultWeeks: 3 },
+            { code: "AHCECR309", name: "Conduct ecological site inspection", color: "Apex", tags: ["Apex"], defaultWeeks: 3 },
             { code: "CUSTOM", name: "Custom Unit/Block", color: "foundational", tags: ["CUSTOM"], defaultWeeks: 1 }
         ];
 
@@ -1157,10 +1174,22 @@ opacity: 0.8;
             foundational: "var(--color-foundational)",
             practical: "var(--color-practical)",
             machinery: "var(--color-machinery)",
-            capstone: "var(--color-capstone)",
+            Apex: "var(--color-Apex)",
             project: "var(--color-project)",
             specialist: "var(--color-specialist)",
-            seasonal: "var(--color-seasonal)"
+            seasonal: "var(--color-seasonal)",
+            easter: "var(--color-easter)",
+            "term-break": "var(--color-term-break)",
+            training: "var(--color-teacher-training)",
+            leave: "var(--color-leave)"
+        };
+
+        // Blocking type labels
+        const blockingLabels = {
+            easter: "EASTER BREAK",
+            "term-break": "TERM BREAK",
+            training: "TEACHER TRAINING",
+            leave: "LEAVE"
         };
 
         // State management
@@ -1170,6 +1199,7 @@ opacity: 0.8;
         let currentPlanId = 'default';
         let history = [];
         let historyIndex = -1;
+        let blockedWeeks = {};
         
         // Check URL parameters for view mode
         const urlParams = new URLSearchParams(window.location.search);
@@ -1179,7 +1209,6 @@ opacity: 0.8;
         // ========== UTILITY FUNCTIONS ==========
         
         function trackUsage(action, data = {}) {
-            // Log usage for improvement purposes
             const usage = {
                 action,
                 timestamp: new Date().toISOString(),
@@ -1187,7 +1216,6 @@ opacity: 0.8;
                 ...data
             };
             
-            // Store in localStorage (or send to server)
             try {
                 let usageLog = JSON.parse(localStorage.getItem('usageLog') || '[]');
                 usageLog.push(usage);
@@ -1198,26 +1226,10 @@ opacity: 0.8;
             }
         }
         
-        function getWeekDates(week) {
-            // Simplified date calculation starting from February
-            const startMonth = 1; // February (0-indexed)
-            const startDate = new Date(new Date().getFullYear(), startMonth, 1);
-            
-            // Calculate date for the given week
-            const weekDate = new Date(startDate);
-            weekDate.setDate(startDate.getDate() + (week - 1) * 7);
-            
-            // Format as short month
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            return monthNames[weekDate.getMonth()];
-        }
-        
         function darkenColor(color, percent) {
-            // Convert CSS variable to RGB
             let r, g, b;
             
             if (color.startsWith('var')) {
-                // Extract color from CSS variable
                 const varName = color.match(/var\(--([^)]+)\)/)[1];
                 const style = getComputedStyle(document.documentElement);
                 const hexColor = style.getPropertyValue(`--${varName}`).trim();
@@ -1227,14 +1239,13 @@ opacity: 0.8;
                     g = parseInt(hexColor.slice(3, 5), 16);
                     b = parseInt(hexColor.slice(5, 7), 16);
                 } else {
-                    r = 78; g = 205; b = 196; // Default to foundational color
+                    r = 78; g = 205; b = 196;
                 }
             } else if (color.startsWith('#')) {
                 r = parseInt(color.slice(1, 3), 16);
                 g = parseInt(color.slice(3, 5), 16);
                 b = parseInt(color.slice(5, 7), 16);
             } else {
-                // Handle rgb() or rgba()
                 const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
                 if (match) {
                     r = parseInt(match[1]);
@@ -1245,7 +1256,6 @@ opacity: 0.8;
                 }
             }
             
-            // Darken
             r = Math.floor(r * (100 - percent) / 100);
             g = Math.floor(g * (100 - percent) / 100);
             b = Math.floor(b * (100 - percent) / 100);
@@ -1282,12 +1292,11 @@ opacity: 0.8;
             }
             
             unit.weeks.forEach(week => {
-                if (week < 1 || week > 37) {
-                    errors.push(`Week ${week} is outside the valid range (1-37)`);
+                if (week < 1 || week > dynamicCourseData.totalWeeks) {
+                    errors.push(`Week ${week} is outside the valid range (1-${dynamicCourseData.totalWeeks})`);
                 }
             });
             
-            // Check for duplicate weeks
             const uniqueWeeks = [...new Set(unit.weeks)];
             if (uniqueWeeks.length !== unit.weeks.length) {
                 errors.push('Duplicate week numbers found');
@@ -1301,26 +1310,690 @@ opacity: 0.8;
                 action,
                 timestamp: new Date().toISOString(),
                 units: JSON.parse(JSON.stringify(currentUnits)),
+                blockedWeeks: JSON.parse(JSON.stringify(blockedWeeks)),
+                courseData: JSON.parse(JSON.stringify(dynamicCourseData)),
                 planId: currentPlanId
             };
             
-            // Remove any future states if we're not at the end
             history = history.slice(0, historyIndex + 1);
             history.push(state);
             historyIndex++;
             
-            // Keep history size manageable
             if (history.length > 50) {
                 history.shift();
                 historyIndex--;
             }
         }
         
+        function updateTotalWeeksDisplay() {
+            const display = document.getElementById('totalWeeksDisplay');
+            if (display) {
+                display.textContent = dynamicCourseData.totalWeeks;
+            }
+            document.documentElement.style.setProperty('--total-weeks', dynamicCourseData.totalWeeks);
+        }
+        
+        // ========== COURSE STRUCTURE FUNCTIONS ==========
+        
+        function loadCourseStructure() {
+            const saved = localStorage.getItem('courseStructure');
+            if (saved) {
+                const data = JSON.parse(saved);
+                dynamicCourseData = data;
+            }
+            updateTotalWeeksDisplay();
+        }
+        
+        function saveCourseStructure() {
+            localStorage.setItem('courseStructure', JSON.stringify(dynamicCourseData));
+            updateTotalWeeksDisplay();
+        }
+        
+        function loadBlockedWeeks() {
+            const saved = localStorage.getItem('blockedWeeks');
+            if (saved) {
+                blockedWeeks = JSON.parse(saved);
+            }
+        }
+        
+        function saveBlockedWeeks() {
+            localStorage.setItem('blockedWeeks', JSON.stringify(blockedWeeks));
+        }
+        
+        // ========== TERM MANAGEMENT FUNCTIONS ==========
+        
+        function updateTermHeaders() {
+            const termHeaders = document.getElementById('termHeaders');
+            if (!termHeaders) return;
+            
+            termHeaders.innerHTML = '';
+            
+            // Add spacer
+            const spacerDiv = document.createElement('div');
+            spacerDiv.className = 'term-header-spacer';
+            spacerDiv.innerHTML = '&nbsp;';
+            termHeaders.appendChild(spacerDiv);
+            
+            // Add term columns
+            let currentWeek = 1;
+            dynamicCourseData.terms.forEach(term => {
+                const termDiv = document.createElement('div');
+                termDiv.className = 'term-column';
+                termDiv.textContent = `Term ${term.number} (Weeks ${term.startWeek}-${term.startWeek + term.weeks - 1})`;
+                termDiv.style.width = `calc(${term.weeks} * var(--week-width))`;
+                termDiv.dataset.term = term.number;
+                termDiv.dataset.startWeek = term.startWeek;
+                termDiv.dataset.weeks = term.weeks;
+                
+                // Add context menu for term management
+                termDiv.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    openTermModal(term.number);
+                });
+                
+                termDiv.addEventListener('click', function(e) {
+                    if (e.ctrlKey) {
+                        openTermModal(term.number);
+                    }
+                });
+                
+                termHeaders.appendChild(termDiv);
+                currentWeek += term.weeks;
+            });
+        }
+        
+        function getTermForWeek(week) {
+            for (let i = 0; i < dynamicCourseData.terms.length; i++) {
+                const term = dynamicCourseData.terms[i];
+                if (week >= term.startWeek && week < term.startWeek + term.weeks) {
+                    return { term, index: i };
+                }
+            }
+            return null;
+        }
+        
+        function openTermModal(termNumber) {
+            const term = dynamicCourseData.terms.find(t => t.number === termNumber);
+            if (!term) return;
+            
+            const modal = document.getElementById('termModal');
+            const modalBody = document.getElementById('termModalBody');
+            
+            if (!modal || !modalBody) return;
+            
+            modalBody.innerHTML = `
+                <div class="form-group">
+                    <label for="termName">Term Name</label>
+                    <input type="text" id="termName" value="${term.name || ''}" placeholder="Enter term name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="termWeeks">Number of Weeks</label>
+                    <input type="number" id="termWeeks" value="${term.weeks}" min="1" max="20">
+                    <small style="color: #636e72;">Changing weeks will adjust subsequent terms</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="termStartWeek">Start Week</label>
+                    <input type="number" id="termStartWeek" value="${term.startWeek}" min="1" max="${dynamicCourseData.totalWeeks}">
+                    <small style="color: #636e72;">Adjust start week (will shift subsequent terms)</small>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button onclick="saveTermChanges(${termNumber})" class="primary" style="flex: 1;">Save Changes</button>
+                    <button onclick="document.getElementById('termModal').style.display = 'none'" style="flex: 1;">Cancel</button>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        window.saveTermChanges = function(termNumber) {
+            const term = dynamicCourseData.terms.find(t => t.number === termNumber);
+            if (!term) return;
+            
+            saveToHistory('modify_term');
+            
+            const newName = document.getElementById('termName').value;
+            const newWeeks = parseInt(document.getElementById('termWeeks').value);
+            const newStartWeek = parseInt(document.getElementById('termStartWeek').value);
+            
+            term.name = newName;
+            
+            // Calculate week difference
+            const weekDiff = newWeeks - term.weeks;
+            
+            if (weekDiff !== 0) {
+                // Update term weeks
+                term.weeks = newWeeks;
+                dynamicCourseData.totalWeeks += weekDiff;
+                
+                // Update subsequent terms' start weeks
+                const termIndex = dynamicCourseData.terms.findIndex(t => t.number === termNumber);
+                for (let i = termIndex + 1; i < dynamicCourseData.terms.length; i++) {
+                    dynamicCourseData.terms[i].startWeek += weekDiff;
+                }
+                
+                // Adjust units in affected terms
+                adjustUnitsForTermChange(termNumber, weekDiff, termIndex);
+                
+                // Adjust blocked weeks
+                adjustBlockedWeeksForTermChange(termNumber, weekDiff, termIndex);
+                
+                // Adjust project milestones
+                adjustProjectMilestonesForWeekChange(weekDiff, term.startWeek + term.weeks);
+            }
+            
+            if (newStartWeek !== term.startWeek) {
+                const startDiff = newStartWeek - term.startWeek;
+                term.startWeek = newStartWeek;
+                
+                // Update subsequent terms
+                const termIndex = dynamicCourseData.terms.findIndex(t => t.number === termNumber);
+                for (let i = termIndex + 1; i < dynamicCourseData.terms.length; i++) {
+                    dynamicCourseData.terms[i].startWeek += startDiff;
+                }
+                
+                // Adjust units
+                adjustUnitsForStartWeekChange(termNumber, startDiff);
+            }
+            
+            const modal = document.getElementById('termModal');
+            if (modal) modal.style.display = 'none';
+            
+            initializeTimeline();
+            renderTimeline();
+            saveCourseStructure();
+            updateSharedPlan();
+            
+            showSyncNotification(`Term ${termNumber} updated`);
+            trackUsage('term_modified', { termNumber, weeks: newWeeks });
+        };
+        
+        function adjustUnitsForTermChange(termNumber, weekDiff, termIndex) {
+            // Adjust units in the changed term and subsequent terms
+            currentUnits.forEach(unit => {
+                const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+                const newWeeks = weeks.map(week => {
+                    // Find which term this week is in
+                    for (let i = 0; i < dynamicCourseData.terms.length; i++) {
+                        const t = dynamicCourseData.terms[i];
+                        if (week >= t.startWeek && week < t.startWeek + t.weeks) {
+                            if (i > termIndex) {
+                                // Week is in a subsequent term, shift it
+                                return week + weekDiff;
+                            }
+                            break;
+                        }
+                    }
+                    return week;
+                });
+                unit.weeks = newWeeks;
+            });
+        }
+        
+        function adjustUnitsForStartWeekChange(termNumber, startDiff) {
+            const term = dynamicCourseData.terms.find(t => t.number === termNumber);
+            if (!term) return;
+            
+            currentUnits.forEach(unit => {
+                const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+                const newWeeks = weeks.map(week => {
+                    // Find which term this week is in
+                    for (let i = 0; i < dynamicCourseData.terms.length; i++) {
+                        const t = dynamicCourseData.terms[i];
+                        if (week >= t.startWeek && week < t.startWeek + t.weeks) {
+                            if (t.number >= termNumber) {
+                                // Week is in this term or a subsequent term, shift it
+                                return week + startDiff;
+                            }
+                            break;
+                        }
+                    }
+                    return week;
+                });
+                unit.weeks = newWeeks;
+            });
+        }
+        
+        function adjustBlockedWeeksForTermChange(termNumber, weekDiff, termIndex) {
+            const newBlockedWeeks = {};
+            Object.keys(blockedWeeks).forEach(weekStr => {
+                let week = parseInt(weekStr);
+                // Find which term this week is in
+                for (let i = 0; i < dynamicCourseData.terms.length; i++) {
+                    const t = dynamicCourseData.terms[i];
+                    if (week >= t.startWeek && week < t.startWeek + t.weeks) {
+                        if (i > termIndex) {
+                            // Week is in a subsequent term, shift it
+                            week += weekDiff;
+                        }
+                        break;
+                    }
+                }
+                newBlockedWeeks[week] = blockedWeeks[weekStr];
+            });
+            blockedWeeks = newBlockedWeeks;
+        }
+        
+        // ========== WEEK MANAGEMENT FUNCTIONS ==========
+        
+        function addWeek() {
+            const position = prompt(`Add week at which position? (1-${dynamicCourseData.totalWeeks + 1}, or "end" for at the end)\n\nExample: "12" adds a week before week 12, "end" adds at the end.`);
+            if (!position) return;
+            
+            saveToHistory('add_week');
+            
+            let insertPosition;
+            if (position.toLowerCase() === 'end') {
+                insertPosition = dynamicCourseData.totalWeeks + 1;
+            } else {
+                insertPosition = parseInt(position);
+                if (isNaN(insertPosition) || insertPosition < 1 || insertPosition > dynamicCourseData.totalWeeks + 1) {
+                    alert(`Invalid position. Please enter a number between 1 and ${dynamicCourseData.totalWeeks + 1}, or "end".`);
+                    return;
+                }
+            }
+            
+            // Increment total weeks
+            dynamicCourseData.totalWeeks++;
+            
+            // Find which term this week is being inserted into
+            let termToUpdate = null;
+            let termIndex = -1;
+            
+            for (let i = 0; i < dynamicCourseData.terms.length; i++) {
+                const term = dynamicCourseData.terms[i];
+                if (insertPosition >= term.startWeek) {
+                    termToUpdate = term;
+                    termIndex = i;
+                }
+            }
+            
+            // If inserting at the very beginning
+            if (!termToUpdate) {
+                termToUpdate = dynamicCourseData.terms[0];
+                termIndex = 0;
+                termToUpdate.startWeek++;
+            }
+            
+            // Update the term where week is inserted
+            if (insertPosition >= termToUpdate.startWeek && insertPosition <= termToUpdate.startWeek + termToUpdate.weeks) {
+                termToUpdate.weeks++;
+            }
+            
+            // Update subsequent terms' start weeks
+            for (let i = termIndex + 1; i < dynamicCourseData.terms.length; i++) {
+                dynamicCourseData.terms[i].startWeek++;
+            }
+            
+            // Adjust units
+            currentUnits.forEach(unit => {
+                const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+                const newWeeks = weeks.map(week => {
+                    if (week >= insertPosition) {
+                        return week + 1;
+                    }
+                    return week;
+                });
+                unit.weeks = newWeeks;
+            });
+            
+            // Adjust blocked weeks
+            const newBlockedWeeks = {};
+            Object.keys(blockedWeeks).forEach(weekStr => {
+                let week = parseInt(weekStr);
+                if (week >= insertPosition) {
+                    week++;
+                }
+                newBlockedWeeks[week] = blockedWeeks[weekStr];
+            });
+            blockedWeeks = newBlockedWeeks;
+            
+            // Adjust project milestones
+            dynamicCourseData.projectMilestones = dynamicCourseData.projectMilestones.map(milestone => {
+                if (milestone.week >= insertPosition) {
+                    return { ...milestone, week: milestone.week + 1 };
+                }
+                return milestone;
+            });
+            
+            // Re-render everything
+            initializeTimeline();
+            renderTimeline();
+            saveCourseStructure();
+            saveBlockedWeeks();
+            updateSharedPlan();
+            
+            showSyncNotification(`Week added at position ${insertPosition}`);
+            trackUsage('add_week', { position: insertPosition });
+        }
+        
+        function removeWeek() {
+            const weekToRemove = prompt(`Remove which week? (1-${dynamicCourseData.totalWeeks})`);
+            if (!weekToRemove) return;
+            
+            const week = parseInt(weekToRemove);
+            if (isNaN(week) || week < 1 || week > dynamicCourseData.totalWeeks) {
+                alert(`Invalid week. Please enter a number between 1 and ${dynamicCourseData.totalWeeks}.`);
+                return;
+            }
+            
+            if (!confirm(`Remove Week ${week}? This will also remove any units scheduled for this week.`)) {
+                return;
+            }
+            
+            saveToHistory('remove_week');
+            
+            // Decrement total weeks
+            dynamicCourseData.totalWeeks--;
+            
+            // Find which term this week is in
+            let termToUpdate = null;
+            let termIndex = -1;
+            
+            for (let i = 0; i < dynamicCourseData.terms.length; i++) {
+                const term = dynamicCourseData.terms[i];
+                if (week >= term.startWeek && week < term.startWeek + term.weeks) {
+                    termToUpdate = term;
+                    termIndex = i;
+                    break;
+                }
+            }
+            
+            if (termToUpdate) {
+                // Update the term where week is removed
+                termToUpdate.weeks--;
+                
+                // If term has 0 weeks, remove it (shouldn't happen in practice)
+                if (termToUpdate.weeks <= 0) {
+                    dynamicCourseData.terms.splice(termIndex, 1);
+                    // Update term numbers
+                    dynamicCourseData.terms.forEach((t, idx) => {
+                        t.number = idx + 1;
+                    });
+                }
+            }
+            
+            // Update subsequent terms' start weeks
+            for (let i = termIndex + 1; i < dynamicCourseData.terms.length; i++) {
+                dynamicCourseData.terms[i].startWeek--;
+            }
+            
+            // Remove units in this week
+            currentUnits = currentUnits.filter(unit => {
+                const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+                return !weeks.includes(week);
+            });
+            
+            // Adjust remaining units
+            currentUnits.forEach(unit => {
+                const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+                const newWeeks = weeks
+                    .map(w => w > week ? w - 1 : w)
+                    .filter(w => w !== week);
+                unit.weeks = newWeeks;
+            });
+            
+            // Remove blocked week if exists
+            delete blockedWeeks[week];
+            
+            // Adjust remaining blocked weeks
+            const newBlockedWeeks = {};
+            Object.keys(blockedWeeks).forEach(weekStr => {
+                let blockedWeek = parseInt(weekStr);
+                if (blockedWeek > week) {
+                    blockedWeek--;
+                }
+                newBlockedWeeks[blockedWeek] = blockedWeeks[weekStr];
+            });
+            blockedWeeks = newBlockedWeeks;
+            
+            // Adjust project milestones
+            dynamicCourseData.projectMilestones = dynamicCourseData.projectMilestones
+                .filter(milestone => milestone.week !== week)
+                .map(milestone => {
+                    if (milestone.week > week) {
+                        return { ...milestone, week: milestone.week - 1 };
+                    }
+                    return milestone;
+                });
+            
+            // Re-render everything
+            initializeTimeline();
+            renderTimeline();
+            saveCourseStructure();
+            saveBlockedWeeks();
+            updateSharedPlan();
+            
+            showSyncNotification(`Week ${week} removed`);
+            trackUsage('remove_week', { week: week });
+        }
+        
+        function addWeekToTerm() {
+            const termNumber = prompt('Add a week to which term? (1-4)');
+            if (!termNumber) return;
+            
+            const termNum = parseInt(termNumber);
+            if (isNaN(termNum) || termNum < 1 || termNum > dynamicCourseData.terms.length) {
+                alert(`Invalid term number. Please enter a number between 1 and ${dynamicCourseData.terms.length}.`);
+                return;
+            }
+            
+            const term = dynamicCourseData.terms[termNum - 1];
+            
+            saveToHistory('add_week_to_term');
+            
+            // Increment total weeks
+            dynamicCourseData.totalWeeks++;
+            
+            // Add week to this term
+            term.weeks++;
+            
+            // Update subsequent terms' start weeks
+            for (let i = termNum; i < dynamicCourseData.terms.length; i++) {
+                dynamicCourseData.terms[i].startWeek++;
+            }
+            
+            // Adjust units in subsequent terms
+            currentUnits.forEach(unit => {
+                const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+                const newWeeks = weeks.map(w => {
+                    if (w >= term.startWeek + term.weeks - 1) { // -1 because we just added a week
+                        return w + 1;
+                    }
+                    return w;
+                });
+                unit.weeks = newWeeks;
+            });
+            
+            // Adjust blocked weeks in subsequent terms
+            const newBlockedWeeks = {};
+            Object.keys(blockedWeeks).forEach(weekStr => {
+                let week = parseInt(weekStr);
+                if (week >= term.startWeek + term.weeks - 1) {
+                    week++;
+                }
+                newBlockedWeeks[week] = blockedWeeks[weekStr];
+            });
+            blockedWeeks = newBlockedWeeks;
+            
+            // Adjust project milestones
+            dynamicCourseData.projectMilestones = dynamicCourseData.projectMilestones.map(milestone => {
+                if (milestone.week >= term.startWeek + term.weeks - 1) {
+                    return { ...milestone, week: milestone.week + 1 };
+                }
+                return milestone;
+            });
+            
+            // Re-render everything
+            initializeTimeline();
+            renderTimeline();
+            saveCourseStructure();
+            saveBlockedWeeks();
+            updateSharedPlan();
+            
+            showSyncNotification(`Week added to Term ${termNum} (now ${term.weeks} weeks)`);
+            trackUsage('add_week_to_term', { term: termNum, newWeeks: term.weeks });
+        }
+        
+        function removeWeekFromTerm() {
+            const termNumber = prompt('Remove a week from which term? (1-4)');
+            if (!termNumber) return;
+            
+            const termNum = parseInt(termNumber);
+            if (isNaN(termNum) || termNum < 1 || termNum > dynamicCourseData.terms.length) {
+                alert(`Invalid term number. Please enter a number between 1 and ${dynamicCourseData.terms.length}.`);
+                return;
+            }
+            
+            const term = dynamicCourseData.terms[termNum - 1];
+            
+            if (term.weeks <= 1) {
+                alert(`Term ${termNum} already has only 1 week. Cannot remove more weeks.`);
+                return;
+            }
+            
+            if (!confirm(`Remove a week from Term ${termNum}? This will remove week ${term.startWeek + term.weeks - 1} and shift subsequent weeks.`)) {
+                return;
+            }
+            
+            saveToHistory('remove_week_from_term');
+            
+            // Get the last week of this term
+            const weekToRemove = term.startWeek + term.weeks - 1;
+            
+            // Decrement total weeks
+            dynamicCourseData.totalWeeks--;
+            
+            // Remove week from this term
+            term.weeks--;
+            
+            // Update subsequent terms' start weeks
+            for (let i = termNum; i < dynamicCourseData.terms.length; i++) {
+                dynamicCourseData.terms[i].startWeek--;
+            }
+            
+            // Remove units in this week
+            currentUnits = currentUnits.filter(unit => {
+                const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+                return !weeks.includes(weekToRemove);
+            });
+            
+            // Adjust remaining units
+            currentUnits.forEach(unit => {
+                const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
+                const newWeeks = weeks
+                    .map(w => w > weekToRemove ? w - 1 : w)
+                    .filter(w => w !== weekToRemove);
+                unit.weeks = newWeeks;
+            });
+            
+            // Remove blocked week if exists
+            delete blockedWeeks[weekToRemove];
+            
+            // Adjust remaining blocked weeks
+            const newBlockedWeeks = {};
+            Object.keys(blockedWeeks).forEach(weekStr => {
+                let blockedWeek = parseInt(weekStr);
+                if (blockedWeek > weekToRemove) {
+                    blockedWeek--;
+                }
+                newBlockedWeeks[blockedWeek] = blockedWeeks[weekStr];
+            });
+            blockedWeeks = newBlockedWeeks;
+            
+            // Adjust project milestones
+            dynamicCourseData.projectMilestones = dynamicCourseData.projectMilestones
+                .filter(milestone => milestone.week !== weekToRemove)
+                .map(milestone => {
+                    if (milestone.week > weekToRemove) {
+                        return { ...milestone, week: milestone.week - 1 };
+                    }
+                    return milestone;
+                });
+            
+            // Re-render everything
+            initializeTimeline();
+            renderTimeline();
+            saveCourseStructure();
+            saveBlockedWeeks();
+            updateSharedPlan();
+            
+            showSyncNotification(`Week removed from Term ${termNum} (now ${term.weeks} weeks)`);
+            trackUsage('remove_week_from_term', { term: termNum, newWeeks: term.weeks });
+        }
+        
+        function adjustProjectMilestonesForWeekChange(weekDiff, afterWeek) {
+            dynamicCourseData.projectMilestones = dynamicCourseData.projectMilestones.map(milestone => {
+                if (milestone.week >= afterWeek) {
+                    return { ...milestone, week: milestone.week + weekDiff };
+                }
+                return milestone;
+            });
+        }
+        
+        function clearTimetable() {
+            if (confirm('Are you sure you want to clear ALL units from the timetable? This action cannot be undone.')) {
+                saveToHistory('clear_timetable');
+                currentUnits = [];
+                renderTimeline();
+                updateSharedPlan();
+                showSyncNotification('Timetable cleared');
+                trackUsage('timetable_cleared');
+            }
+        }
+        
+        function applyWeekBlocking() {
+            const blockingType = document.getElementById('weekBlocking').value;
+            const weekRangeInput = document.getElementById('weekRange').value;
+            
+            if (!blockingType || !weekRangeInput) {
+                alert('Please select a blocking type and enter week range');
+                return;
+            }
+            
+            let weeks = [];
+            if (weekRangeInput.includes('-')) {
+                const [start, end] = weekRangeInput.split('-').map(Number);
+                weeks = Array.from({length: end - start + 1}, (_, i) => start + i);
+            } else if (weekRangeInput.includes(',')) {
+                weeks = weekRangeInput.split(',').map(w => parseInt(w.trim())).filter(w => !isNaN(w));
+            } else {
+                weeks = [parseInt(weekRangeInput) || 1];
+            }
+            
+            weeks.forEach(week => {
+                if (week < 1 || week > dynamicCourseData.totalWeeks) {
+                    alert(`Week ${week} is outside valid range (1-${dynamicCourseData.totalWeeks})`);
+                    return;
+                }
+            });
+            
+            saveToHistory('block_weeks');
+            
+            weeks.forEach(week => {
+                if (blockingType === 'clear') {
+                    delete blockedWeeks[week];
+                } else {
+                    blockedWeeks[week] = {
+                        type: blockingType,
+                        color: colorMap[blockingType],
+                        label: blockingLabels[blockingType]
+                    };
+                }
+            });
+            
+            renderTimeline();
+            saveBlockedWeeks();
+            showSyncNotification(`Week blocking applied to weeks ${weeks.join(', ')}`);
+            trackUsage('week_blocking', { type: blockingType, weeks: weeks });
+        }
+        
         // ========== STUDENT VIEW FUNCTIONS ==========
         
         function loadSharedPlan() {
             if (!sharedPlanId) {
-                // Use default units if no shared plan
                 currentUnits = JSON.parse(JSON.stringify(defaultUnits));
                 return;
             }
@@ -1331,26 +2004,23 @@ opacity: 0.8;
                     const plan = JSON.parse(sharedPlanData);
                     currentUnits = JSON.parse(JSON.stringify(plan.units));
                     currentPlanId = plan.id;
-                    
-                    // Store the initial update timestamp
+                    if (plan.courseData) dynamicCourseData = JSON.parse(JSON.stringify(plan.courseData));
+                    if (plan.blockedWeeks) blockedWeeks = JSON.parse(JSON.stringify(plan.blockedWeeks));
                     localStorage.setItem('lastPlanUpdate_' + sharedPlanId, plan.lastUpdate || plan.date);
                 } else {
-                    // Fall back to default units
                     currentUnits = JSON.parse(JSON.stringify(defaultUnits));
                 }
             } catch (e) {
                 console.error('Error loading shared plan:', e);
-                // Fall back to default units
                 currentUnits = JSON.parse(JSON.stringify(defaultUnits));
             }
+            updateTotalWeeksDisplay();
         }
         
         function setupStudentView() {
-            // Apply student view styles
             document.body.classList.remove('editor-view');
             document.body.classList.add('student-view');
             
-            // Update titles - check if elements exist first
             const courseTitle = document.getElementById('courseTitle');
             const courseSubtitle = document.getElementById('courseSubtitle');
             const courseDescription = document.getElementById('courseDescription');
@@ -1358,12 +2028,11 @@ opacity: 0.8;
             const footerText = document.getElementById('footerText');
             
             if (courseTitle) courseTitle.textContent = 'Course Schedule - Cert III Conservation & Ecosystem Management';
-            if (courseSubtitle) courseSubtitle.textContent = 'Student View - 37-Week Plan';
+            if (courseSubtitle) courseSubtitle.textContent = 'Student View - ' + dynamicCourseData.totalWeeks + '-Week Plan';
             if (courseDescription) courseDescription.textContent = 'Interactive course timeline - Updated automatically';
             if (viewModeIndicator) viewModeIndicator.textContent = 'Student View';
             if (footerText) footerText.textContent = 'This view updates automatically as your teacher makes changes to the course schedule.';
             
-            // Hide editor elements - check if they exist first
             const controls = document.querySelector('.controls');
             const unitPalette = document.querySelector('.unit-palette');
             const legend = document.querySelector('.legend');
@@ -1372,15 +2041,12 @@ opacity: 0.8;
             if (unitPalette) unitPalette.style.display = 'none';
             if (legend) legend.style.display = 'none';
             
-            // Initialize student view
             initializeTimeline();
             renderStudentTimeline();
             createTermOverviews();
             
-            // Setup auto-refresh for student view
             setupStudentAutoRefresh();
             
-            // Setup progress tracking for students
             if (sharedPlanId) {
                 setupStudentProgress();
             }
@@ -1392,7 +2058,6 @@ opacity: 0.8;
             
             grid.innerHTML = '';
             
-            // Create ONE swimlane for student view (all units go here)
             const swimlanes = [
                 { id: 'student-units', label: 'Weekly Units & Activities' }
             ];
@@ -1410,15 +2075,23 @@ opacity: 0.8;
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'swimlane-content';
                 
-                // Create week slots
-                for (let week = 1; week <= 37; week++) {
+                for (let week = 1; week <= dynamicCourseData.totalWeeks; week++) {
                     const slotDiv = document.createElement('div');
                     slotDiv.className = 'week-slot';
                     slotDiv.dataset.week = week;
                     slotDiv.dataset.swimlane = swimlane.id;
                     
-                    // No holiday checking - all weeks are regular teaching weeks
-                    // Add empty slot indicator
+                    if (blockedWeeks[week]) {
+                        slotDiv.style.background = blockedWeeks[week].color;
+                        slotDiv.style.opacity = '0.7';
+                        slotDiv.title = blockedWeeks[week].label;
+                        
+                        const blockedIndicator = document.createElement('div');
+                        blockedIndicator.style.cssText = 'font-size: 10px; color: white; background: rgba(0,0,0,0.3); padding: 2px 5px; border-radius: 3px; position: absolute; top: 5px; left: 5px;';
+                        blockedIndicator.textContent = blockedWeeks[week].label.split(' ')[0];
+                        slotDiv.appendChild(blockedIndicator);
+                    }
+                    
                     const emptyIndicator = document.createElement('div');
                     emptyIndicator.className = 'empty-slot';
                     emptyIndicator.textContent = 'No units';
@@ -1431,12 +2104,10 @@ opacity: 0.8;
                 grid.appendChild(swimlaneDiv);
             });
             
-            // Place units in timeline (all units go in the 'student-units' swimlane)
             currentUnits.forEach(unit => {
                 placeUnitInStudentTimeline(unit);
             });
             
-            // Create project swimlane with milestones
             createProjectSwimlane();
         }
         
@@ -1456,29 +2127,24 @@ opacity: 0.8;
             const contentDiv = document.createElement('div');
             contentDiv.className = 'swimlane-content';
             
-            // Create week slots
-            for (let week = 1; week <= 37; week++) {
+            for (let week = 1; week <= dynamicCourseData.totalWeeks; week++) {
                 const slotDiv = document.createElement('div');
                 slotDiv.className = 'week-slot';
                 slotDiv.dataset.week = week;
                 slotDiv.dataset.swimlane = 'student-project';
-                
                 contentDiv.appendChild(slotDiv);
             }
             
-            // Add project thread
             const threadDiv = document.createElement('div');
             threadDiv.className = 'project-thread';
             
-            // Add milestones
-            courseData.projectMilestones.forEach(milestone => {
+            dynamicCourseData.projectMilestones.forEach(milestone => {
                 const milestoneDiv = document.createElement('div');
                 milestoneDiv.className = 'project-milestone';
-                const weekWidth = 120; // Student view width
+                const weekWidth = 120;
                 milestoneDiv.style.left = `calc(${(milestone.week - 1) * weekWidth}px + ${weekWidth/2}px)`;
                 milestoneDiv.title = milestone.label;
                 
-                // Add milestone label
                 const label = document.createElement('div');
                 label.textContent = milestone.label;
                 label.style.position = 'absolute';
@@ -1500,12 +2166,11 @@ opacity: 0.8;
         
         function placeUnitInStudentTimeline(unit) {
             const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
-            const swimlane = 'student-units'; // All units go here in student view
+            const swimlane = 'student-units';
             
             weeks.forEach(week => {
                 const slot = document.querySelector(`.week-slot[data-week="${week}"][data-swimlane="${swimlane}"]`);
                 if (slot) {
-                    // Remove empty indicator if present
                     const emptyIndicator = slot.querySelector('.empty-slot');
                     if (emptyIndicator) {
                         emptyIndicator.remove();
@@ -1514,7 +2179,6 @@ opacity: 0.8;
                     const unitDiv = createStudentUnitBlock(unit, week);
                     slot.appendChild(unitDiv);
                     
-                    // Add unit count indicator
                     updateUnitCountIndicator(slot, week);
                 }
             });
@@ -1526,12 +2190,10 @@ opacity: 0.8;
             unitDiv.dataset.unitId = unit.id;
             unitDiv.dataset.week = week;
             
-            // Set color based on unit type
             const color = colorMap[unit.color] || colorMap.foundational;
             unitDiv.style.background = color;
             unitDiv.style.borderLeft = `4px solid ${darkenColor(color, 30)}`;
             
-            // Simplified display for students
             const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
             const isFirstWeek = week === Math.min(...weeks);
             
@@ -1541,10 +2203,9 @@ opacity: 0.8;
                 ${weeks.length > 1 && isFirstWeek ? 
                     `<div class="week-summary">Continues for ${weeks.length} weeks</div>` : ''}
                 ${unit.teacher === 'other' ? 
-                    `<div class="week-summary" style="color: #fd79a8;">Specialist Teacher</div>` : ''}
+                    `<div class="week-summary" style="color: #fd79a8;">Other Teacher</div>` : ''}
             `;
             
-            // Add click event to show unit details (read-only for students)
             unitDiv.addEventListener('click', () => showStudentUnitDetails(unit));
             
             return unitDiv;
@@ -1553,7 +2214,6 @@ opacity: 0.8;
         function updateUnitCountIndicator(slot, week) {
             const unitsInSlot = slot.querySelectorAll('.unit-block');
             if (unitsInSlot.length > 1) {
-                // Create or update count indicator
                 let countIndicator = slot.querySelector('.unit-count');
                 if (!countIndicator) {
                     countIndicator = document.createElement('div');
@@ -1562,7 +2222,6 @@ opacity: 0.8;
                 }
                 countIndicator.textContent = unitsInSlot.length;
             } else {
-                // Remove count indicator if only one unit
                 const countIndicator = slot.querySelector('.unit-count');
                 if (countIndicator) {
                     countIndicator.remove();
@@ -1576,11 +2235,10 @@ opacity: 0.8;
             
             container.innerHTML = '';
             
-            courseData.terms.forEach(term => {
+            dynamicCourseData.terms.forEach(term => {
                 const termDiv = document.createElement('div');
                 termDiv.className = 'term-overview';
                 
-                // Get units in this term
                 const termUnits = currentUnits.filter(unit => {
                     const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
                     return weeks.some(week => 
@@ -1589,7 +2247,6 @@ opacity: 0.8;
                     );
                 });
                 
-                // Remove duplicates (units that span multiple weeks)
                 const uniqueUnits = [];
                 const seenCodes = new Set();
                 termUnits.forEach(unit => {
@@ -1600,14 +2257,14 @@ opacity: 0.8;
                 });
                 
                 termDiv.innerHTML = `
-                    <h3>Term ${term.number}: ${term.name}</h3>
+                    <h3>Term ${term.number}: ${term.name || ''}</h3>
                     <div class="term-units">
                         ${uniqueUnits.map(unit => `
                             <div class="term-unit-card">
                                 <div style="font-weight: 600; color: #0984e3;">${unit.code}</div>
                                 <div style="font-size: 13px; margin-top: 5px;">${unit.name}</div>
                                 ${unit.teacher === 'other' ? 
-                                    `<div style="font-size: 11px; color: #fd79a8; margin-top: 3px;">Specialist Teacher</div>` : ''}
+                                    `<div style="font-size: 11px; color: #fd79a8; margin-top: 3px;">Other Teacher</div>` : ''}
                                 ${unit.tags && unit.tags.includes('SEASONAL') ? 
                                     `<div style="font-size: 11px; color: #55efc4; margin-top: 3px;">Seasonal Timing</div>` : ''}
                             </div>
@@ -1618,7 +2275,6 @@ opacity: 0.8;
                 container.appendChild(termDiv);
             });
             
-            // Show term overviews in student view
             if (isStudentView && container) {
                 container.style.display = 'block';
             }
@@ -1647,7 +2303,7 @@ opacity: 0.8;
                         </div>
                         <div style="flex: 1; background: #f8f9fa; padding: 10px; border-radius: 6px;">
                             <div style="font-size: 12px; color: #636e72;">Taught by</div>
-                            <div style="font-weight: 600;">${unit.teacher === 'other' ? 'Specialist Teacher' : 'Main Teacher'}</div>
+                            <div style="font-weight: 600;">${unit.teacher === 'other' ? 'Other Teacher' : 'Main Teacher'}</div>
                         </div>
                     </div>
                     
@@ -1707,13 +2363,11 @@ opacity: 0.8;
                 completedWeeks: {}
             };
             
-            // Load saved progress
             const savedProgress = localStorage.getItem(progressKey);
             if (savedProgress) {
                 progress = JSON.parse(savedProgress);
             }
             
-            // Add progress indicators to units
             document.querySelectorAll('.unit-block').forEach(block => {
                 const unitId = block.dataset.unitId;
                 const isCompleted = progress.completedUnits.includes(parseInt(unitId));
@@ -1750,20 +2404,15 @@ opacity: 0.8;
                 progress.completedUnits.splice(index, 1);
             }
             
-            // Save progress
             localStorage.setItem(progressKey, JSON.stringify(progress));
-            
-            // Refresh view
             setupStudentProgress();
         }
         
         function setupStudentAutoRefresh() {
-            // Check for updates every 10 seconds
             setInterval(() => {
                 checkForPlanUpdates();
             }, 10000);
             
-            // Also check when page becomes visible again
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
                     checkForPlanUpdates();
@@ -1775,30 +2424,24 @@ opacity: 0.8;
             if (!sharedPlanId) return;
             
             try {
-                // Get the shared plan from localStorage
                 const sharedPlanData = localStorage.getItem('sharedPlan_' + sharedPlanId);
                 if (!sharedPlanData) return;
                 
                 const plan = JSON.parse(sharedPlanData);
-                
-                // Check if plan has been updated
                 const lastUpdate = localStorage.getItem('lastPlanUpdate_' + sharedPlanId);
                 const currentUpdate = plan.lastUpdate || plan.date;
                 
-                // Check if we need to update
                 if (!lastUpdate || lastUpdate !== currentUpdate) {
-                    // Update units
                     currentUnits = JSON.parse(JSON.stringify(plan.units));
+                    if (plan.courseData) dynamicCourseData = JSON.parse(JSON.stringify(plan.courseData));
+                    if (plan.blockedWeeks) blockedWeeks = JSON.parse(JSON.stringify(plan.blockedWeeks));
                     
-                    // Re-render the student view
+                    updateTotalWeeksDisplay();
                     renderStudentTimeline();
                     createTermOverviews();
                     setupStudentProgress();
                     
-                    // Save the update timestamp
                     localStorage.setItem('lastPlanUpdate_' + sharedPlanId, currentUpdate);
-                    
-                    // Show update notification
                     showSyncNotification('Course schedule has been updated');
                 }
             } catch (e) {
@@ -1814,32 +2457,27 @@ opacity: 0.8;
             
             weekHeaders.innerHTML = '';
             
-            // Calculate week width based on view mode
             const isStudent = document.body.classList.contains('student-view');
             const weekWidth = isStudent ? 120 : 150;
             
-            // Add empty column for swimlane alignment
             const spacerDiv = document.createElement('div');
             spacerDiv.className = 'week-cell';
             spacerDiv.style.cssText = 'width: 120px; background: #f8f9fa; border-right: 2px solid #ddd;';
             spacerDiv.innerHTML = '&nbsp;';
             weekHeaders.appendChild(spacerDiv);
             
-            // Create week headers
-            for (let week = 1; week <= 37; week++) {
+            for (let week = 1; week <= dynamicCourseData.totalWeeks; week++) {
                 const weekCell = document.createElement('div');
                 weekCell.className = 'week-cell';
                 weekCell.style.width = `${weekWidth}px`;
                 weekCell.innerHTML = `
                     <div class="week-number">Week ${week}</div>
-                    <!-- UPDATED: Commented out month indicators -->
-                    <!-- <div class="week-dates">${getWeekDates(week)}</div> -->
                 `;
-                
-                // NO HOLIDAY CHECKING - all weeks are teaching weeks
                 
                 weekHeaders.appendChild(weekCell);
             }
+            
+            updateTermHeaders();
         }
         
         function renderPalette() {
@@ -1876,12 +2514,11 @@ opacity: 0.8;
             
             grid.innerHTML = '';
             
-            // Create swimlanes
             const swimlanes = [
-                { id: 'core', label: 'Core Units (Main Teacher)' },
+                { id: 'core', label: 'Main Units (Main Teacher)' },
                 { id: 'specialist', label: 'Specialist Units (Other Teacher)' },
                 { id: 'project', label: 'Integrated Project' },
-                { id: 'capstone', label: 'Capstone & Assessment' }
+                { id: 'Apex', label: 'Apex & Assessment' }
             ];
             
             swimlanes.forEach(swimlane => {
@@ -1897,21 +2534,29 @@ opacity: 0.8;
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'swimlane-content';
                 
-                // Create week slots
-                for (let week = 1; week <= 37; week++) {
+                for (let week = 1; week <= dynamicCourseData.totalWeeks; week++) {
                     const slotDiv = document.createElement('div');
                     slotDiv.className = 'week-slot';
                     slotDiv.dataset.week = week;
                     slotDiv.dataset.swimlane = swimlane.id;
                     
-                    // NO HOLIDAY CHECKING - all weeks are teaching weeks
-                    // Add empty slot indicator
+                    if (blockedWeeks[week]) {
+                        slotDiv.style.background = blockedWeeks[week].color;
+                        slotDiv.style.opacity = '0.7';
+                        slotDiv.title = blockedWeeks[week].label;
+                        slotDiv.classList.add('blocked-week');
+                        
+                        const blockedIndicator = document.createElement('div');
+                        blockedIndicator.style.cssText = 'font-size: 10px; color: white; background: rgba(0,0,0,0.3); padding: 2px 5px; border-radius: 3px; position: absolute; top: 5px; left: 5px;';
+                        blockedIndicator.textContent = blockedWeeks[week].label.split(' ')[0];
+                        slotDiv.appendChild(blockedIndicator);
+                    }
+                    
                     const emptyIndicator = document.createElement('div');
                     emptyIndicator.className = 'empty-slot';
                     emptyIndicator.textContent = 'Drag unit here';
                     slotDiv.appendChild(emptyIndicator);
                     
-                    // Make droppable
                     slotDiv.addEventListener('dragover', handleDragOver);
                     slotDiv.addEventListener('dragenter', handleDragEnter);
                     slotDiv.addEventListener('dragleave', handleDragLeave);
@@ -1924,21 +2569,18 @@ opacity: 0.8;
                 grid.appendChild(swimlaneDiv);
             });
             
-            // Add project thread to project swimlane
             const projectSwimlane = document.querySelector('.swimlane[data-swimlane="project"] .swimlane-content');
             if (projectSwimlane) {
                 const threadDiv = document.createElement('div');
                 threadDiv.className = 'project-thread';
                 
-                // Add milestones
-                courseData.projectMilestones.forEach(milestone => {
+                dynamicCourseData.projectMilestones.forEach(milestone => {
                     const milestoneDiv = document.createElement('div');
                     milestoneDiv.className = 'project-milestone';
                     const weekWidth = document.body.classList.contains('student-view') ? 120 : 150;
                     milestoneDiv.style.left = `calc(${(milestone.week - 1) * weekWidth}px + ${weekWidth/2}px)`;
                     milestoneDiv.title = milestone.label;
                     
-                    // Add milestone label
                     const label = document.createElement('div');
                     label.textContent = milestone.label;
                     label.style.position = 'absolute';
@@ -1956,12 +2598,10 @@ opacity: 0.8;
                 projectSwimlane.appendChild(threadDiv);
             }
             
-            // Place units in timeline
             currentUnits.forEach(unit => {
                 placeUnitInTimeline(unit);
             });
             
-            // Hide student term overviews in editor view
             const studentTermOverviews = document.getElementById('studentTermOverviews');
             if (studentTermOverviews) {
                 studentTermOverviews.style.display = 'none';
@@ -1969,7 +2609,7 @@ opacity: 0.8;
         }
         
         function getSwimlaneForUnit(unit) {
-            if (unit.tags && unit.tags.includes('CAPSTONE')) return 'capstone';
+            if (unit.tags && unit.tags.includes('Apex')) return 'Apex';
             if (unit.teacher === 'other') return 'specialist';
             if (unit.code === 'INTEGRATION' || unit.code === 'PROJECT') return 'project';
             return 'core';
@@ -1982,7 +2622,6 @@ opacity: 0.8;
             weeks.forEach(week => {
                 const slot = document.querySelector(`.week-slot[data-week="${week}"][data-swimlane="${swimlane}"]`);
                 if (slot) {
-                    // Remove empty indicator if present
                     const emptyIndicator = slot.querySelector('.empty-slot');
                     if (emptyIndicator) {
                         emptyIndicator.remove();
@@ -2001,12 +2640,10 @@ opacity: 0.8;
             unitDiv.dataset.week = week;
             unitDiv.draggable = true;
             
-            // Set color based on unit type
             const color = colorMap[unit.color] || colorMap.foundational;
             unitDiv.style.background = color;
             unitDiv.style.borderLeft = `4px solid ${darkenColor(color, 30)}`;
             
-            // Determine if this is multi-week
             const weeks = Array.isArray(unit.weeks) ? unit.weeks : [unit.weeks];
             const isFirstWeek = week === Math.min(...weeks);
             
@@ -2042,7 +2679,6 @@ opacity: 0.8;
                 this.classList.add('dragging');
             }, 0);
             
-            // Highlight droppable areas
             document.querySelectorAll('.week-slot').forEach(slot => {
                 slot.classList.add('droppable');
             });
@@ -2055,12 +2691,9 @@ opacity: 0.8;
         
         function handleDragEnd() {
             this.classList.remove('dragging');
-            
-            // Remove droppable highlights
             document.querySelectorAll('.week-slot').forEach(slot => {
                 slot.classList.remove('droppable');
             });
-            
             draggedUnit = null;
             draggedFromPalette = false;
         }
@@ -2086,17 +2719,11 @@ opacity: 0.8;
             const swimlane = this.dataset.swimlane;
             
             if (draggedFromPalette) {
-                // Save to history before change
                 saveToHistory('add_unit');
-                
-                // Add new unit from palette
                 const templateCode = e.dataTransfer.getData('text/plain');
                 addUnitFromTemplate(templateCode, week, swimlane);
             } else {
-                // Save to history before change
                 saveToHistory('move_unit');
-                
-                // Move existing unit
                 const unitId = parseInt(e.dataTransfer.getData('text/plain'));
                 moveUnit(unitId, week, swimlane);
             }
@@ -2106,7 +2733,6 @@ opacity: 0.8;
             const template = unitTemplates.find(t => t.code === templateCode);
             if (!template) return;
             
-            // Find the next available unit ID
             const nextId = Math.max(...currentUnits.map(u => u.id), 0) + 1;
             
             const newUnit = {
@@ -2123,13 +2749,8 @@ opacity: 0.8;
             
             currentUnits.push(newUnit);
             renderTimeline();
-            
-            // Update shared plan
             updateSharedPlan();
-            
-            // Open modal to edit new unit
             setTimeout(() => openUnitModal(nextId), 100);
-            
             trackUsage('unit_added', { template: templateCode, week: week });
         }
         
@@ -2137,7 +2758,6 @@ opacity: 0.8;
             const unit = currentUnits.find(u => u.id === unitId);
             if (!unit) return;
             
-            // Check constraints for seasonal units
             if (unit.tags && unit.tags.includes('SEASONAL') && newWeek > 10) {
                 if (!confirm("This is a seasonal unit best placed in Term 1. Move anyway?")) {
                     renderTimeline();
@@ -2145,7 +2765,6 @@ opacity: 0.8;
                 }
             }
             
-            // Check constraints for safety units
             if (unit.tags && unit.tags.includes('SAFETY') && newWeek > 2) {
                 if (!confirm("Safety units should be first. Move anyway?")) {
                     renderTimeline();
@@ -2153,10 +2772,8 @@ opacity: 0.8;
                 }
             }
             
-            // Update unit weeks
             unit.weeks = [newWeek];
             
-            // Update teacher based on swimlane
             if (newSwimlane === 'specialist') {
                 unit.teacher = 'other';
                 if (!unit.tags.includes('SPECIALIST')) {
@@ -2168,11 +2785,8 @@ opacity: 0.8;
             }
             
             renderTimeline();
-            
-            // Update shared plan
             updateSharedPlan();
             showSyncNotification('Changes saved to student view');
-            
             trackUsage('unit_moved', { unitId: unitId, from: unit.weeks, to: newWeek });
         }
         
@@ -2214,7 +2828,7 @@ opacity: 0.8;
                         <option value="foundational" ${unit.color === 'foundational' ? 'selected' : ''}>Foundational</option>
                         <option value="practical" ${unit.color === 'practical' ? 'selected' : ''}>Practical</option>
                         <option value="machinery" ${unit.color === 'machinery' ? 'selected' : ''}>Machinery</option>
-                        <option value="capstone" ${unit.color === 'capstone' ? 'selected' : ''}>Capstone</option>
+                        <option value="Apex" ${unit.color === 'Apex' ? 'selected' : ''}>Apex</option>
                         <option value="project" ${unit.color === 'project' ? 'selected' : ''}>Project</option>
                         <option value="seasonal" ${unit.color === 'seasonal' ? 'selected' : ''}>Seasonal</option>
                         <option value="specialist" ${unit.color === 'specialist' ? 'selected' : ''}>Specialist</option>
@@ -2225,7 +2839,7 @@ opacity: 0.8;
                     <label for="unitTeacher">Teacher</label>
                     <select id="unitTeacher">
                         <option value="main" ${unit.teacher === 'main' ? 'selected' : ''}>Main Teacher</option>
-                        <option value="other" ${unit.teacher === 'other' ? 'selected' : ''}>Specialist Teacher</option>
+                        <option value="other" ${unit.teacher === 'other' ? 'selected' : ''}>Other Teacher</option>
                     </select>
                 </div>
                 
@@ -2281,13 +2895,11 @@ opacity: 0.8;
             const unit = currentUnits.find(u => u.id === unitId);
             if (!unit) return;
             
-            // Save to history before change
             saveToHistory('edit_unit');
             
             unit.code = document.getElementById('unitCode').value;
             unit.name = document.getElementById('unitName').value;
             
-            // Parse weeks input
             const weeksInput = document.getElementById('unitWeeks').value;
             if (weeksInput.includes('-')) {
                 const [start, end] = weeksInput.split('-').map(Number);
@@ -2301,25 +2913,21 @@ opacity: 0.8;
             unit.color = document.getElementById('unitColor').value;
             unit.teacher = document.getElementById('unitTeacher').value;
             
-            // Parse tags
             const tagsInput = document.getElementById('unitTags').value;
             unit.tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
             
             unit.notes = document.getElementById('unitNotes').value;
             
-            // Validate unit
             const errors = validateUnit(unit);
             if (errors.length > 0) {
                 alert('Please fix the following errors:\n\n' + errors.join('\n'));
                 return;
             }
             
-            // Close modal and re-render
             const modal = document.getElementById('unitModal');
             if (modal) modal.style.display = 'none';
             renderTimeline();
             
-            // Update shared plan
             updateSharedPlan();
             showSyncNotification('Unit updated in student view');
             
@@ -2349,12 +2957,10 @@ opacity: 0.8;
                 description
             });
             
-            // Clear inputs
             document.getElementById('newResourceTitle').value = '';
             document.getElementById('newResourceUrl').value = '';
             document.getElementById('newResourceDesc').value = '';
             
-            // Re-open modal to show updated resources
             openUnitModal(unitId);
         };
         
@@ -2368,18 +2974,13 @@ opacity: 0.8;
         
         window.deleteUnit = function(unitId) {
             if (confirm('Are you sure you want to delete this unit?')) {
-                // Save to history before change
                 saveToHistory('delete_unit');
-                
                 currentUnits = currentUnits.filter(u => u.id !== unitId);
                 const modal = document.getElementById('unitModal');
                 if (modal) modal.style.display = 'none';
                 renderTimeline();
-                
-                // Update shared plan
                 updateSharedPlan();
                 showSyncNotification('Unit removed from student view');
-                
                 trackUsage('unit_deleted', { unitId: unitId });
             }
         };
@@ -2387,16 +2988,16 @@ opacity: 0.8;
         // ========== SHARE & PLAN MANAGEMENT ==========
         
         function setupEventListeners() {
-            // Modal close button
             const closeModalBtn = document.querySelector('.close-modal');
             if (closeModalBtn) {
                 closeModalBtn.addEventListener('click', function() {
                     const modal = document.getElementById('unitModal');
                     if (modal) modal.style.display = 'none';
+                    const termModal = document.getElementById('termModal');
+                    if (termModal) termModal.style.display = 'none';
                 });
             }
             
-            // Close modal when clicking outside
             const modal = document.getElementById('unitModal');
             if (modal) {
                 modal.addEventListener('click', function(e) {
@@ -2406,7 +3007,15 @@ opacity: 0.8;
                 });
             }
             
-            // Control buttons
+            const termModal = document.getElementById('termModal');
+            if (termModal) {
+                termModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            }
+            
             const savePlanBtn = document.getElementById('savePlan');
             if (savePlanBtn) savePlanBtn.addEventListener('click', saveCurrentPlan);
             
@@ -2422,13 +3031,30 @@ opacity: 0.8;
             const exportPlanBtn = document.getElementById('exportPlan');
             if (exportPlanBtn) exportPlanBtn.addEventListener('click', exportPlan);
             
+            const clearTimetableBtn = document.getElementById('clearTimetable');
+            if (clearTimetableBtn) clearTimetableBtn.addEventListener('click', clearTimetable);
+            
+            const applyBlockingBtn = document.getElementById('applyBlocking');
+            if (applyBlockingBtn) applyBlockingBtn.addEventListener('click', applyWeekBlocking);
+            
+            const addWeekBtn = document.getElementById('addWeekBtn');
+            if (addWeekBtn) addWeekBtn.addEventListener('click', addWeek);
+            
+            const removeWeekBtn = document.getElementById('removeWeekBtn');
+            if (removeWeekBtn) removeWeekBtn.addEventListener('click', removeWeek);
+            
+            const addWeekToTermBtn = document.getElementById('addWeekToTermBtn');
+            if (addWeekToTermBtn) addWeekToTermBtn.addEventListener('click', addWeekToTerm);
+            
+            const removeWeekFromTermBtn = document.getElementById('removeWeekFromTermBtn');
+            if (removeWeekFromTermBtn) removeWeekFromTermBtn.addEventListener('click', removeWeekFromTerm);
+            
             const addCustomUnitBtn = document.getElementById('addCustomUnit');
             if (addCustomUnitBtn) addCustomUnitBtn.addEventListener('click', addCustomUnit);
             
             const importPlanBtn = document.getElementById('importPlanBtn');
             if (importPlanBtn) importPlanBtn.addEventListener('click', importPlanFromFile);
             
-            // Import file input
             const importPlanInput = document.getElementById('importPlanInput');
             if (importPlanInput) {
                 importPlanInput.addEventListener('change', function(e) {
@@ -2438,11 +3064,9 @@ opacity: 0.8;
                 });
             }
             
-            // Copy share link button
             const copyShareLinkBtn = document.getElementById('copyShareLinkBtn');
             if (copyShareLinkBtn) copyShareLinkBtn.addEventListener('click', copyShareLink);
             
-            // View controls
             const viewModeSelect = document.getElementById('viewMode');
             if (viewModeSelect) {
                 viewModeSelect.addEventListener('change', function() {
@@ -2467,13 +3091,11 @@ opacity: 0.8;
                 });
             }
             
-            // View toggle
             const toggleViewBtn = document.getElementById('toggleView');
             if (toggleViewBtn) {
                 toggleViewBtn.addEventListener('click', toggleViewMode);
             }
             
-            // Close share dialog when clicking outside
             document.addEventListener('click', function(e) {
                 const shareContainer = document.getElementById('shareLinkContainer');
                 const toggleButton = document.getElementById('toggleView');
@@ -2496,22 +3118,18 @@ opacity: 0.8;
                 id: Date.now().toString(),
                 name: planName,
                 date: new Date().toISOString(),
-                units: JSON.parse(JSON.stringify(currentUnits))
+                units: JSON.parse(JSON.stringify(currentUnits)),
+                courseData: JSON.parse(JSON.stringify(dynamicCourseData)),
+                blockedWeeks: JSON.parse(JSON.stringify(blockedWeeks))
             };
             
-            // Save to localStorage
             let savedPlans = JSON.parse(localStorage.getItem('conservationPlans')) || [];
             savedPlans.push(plan);
             localStorage.setItem('conservationPlans', JSON.stringify(savedPlans));
             
-            // Also update the shared plan
             updateSharedPlan();
-            
             loadSavedPlans();
-            
-            // Show sync notification
             showSyncNotification(`Plan "${planName}" saved! Student view will update.`);
-            
             trackUsage('plan_saved', { planName: planName });
         }
         
@@ -2543,18 +3161,20 @@ opacity: 0.8;
             const plan = savedPlans.find(p => p.id === planId);
             
             if (plan) {
-                // Save to history before change
                 saveToHistory('load_plan');
-                
                 currentUnits = JSON.parse(JSON.stringify(plan.units));
+                if (plan.courseData) dynamicCourseData = JSON.parse(JSON.stringify(plan.courseData));
+                if (plan.blockedWeeks) blockedWeeks = JSON.parse(JSON.stringify(plan.blockedWeeks));
                 currentPlanId = planId;
-                renderTimeline();
                 
-                // Update shared plan
+                updateTotalWeeksDisplay();
+                initializeTimeline();
+                renderTimeline();
                 updateSharedPlan();
+                saveCourseStructure();
+                saveBlockedWeeks();
                 
                 showSyncNotification(`Plan "${plan.name}" loaded successfully!`);
-                
                 trackUsage('plan_loaded', { planId: planId, planName: plan.name });
             }
         };
@@ -2565,25 +3185,40 @@ opacity: 0.8;
                 savedPlans = savedPlans.filter(p => p.id !== planId);
                 localStorage.setItem('conservationPlans', JSON.stringify(savedPlans));
                 loadSavedPlans();
-                
                 trackUsage('plan_deleted', { planId: planId });
             }
         };
         
         function resetToDefault() {
             if (confirm('Reset to default course sequence? Any unsaved changes will be lost.')) {
-                // Save to history before change
                 saveToHistory('reset_to_default');
-                
                 currentUnits = JSON.parse(JSON.stringify(defaultUnits));
+                dynamicCourseData = {
+                    totalWeeks: 37,
+                    terms: [
+                        { number: 1, weeks: 10, startWeek: 1, name: "Safety, Foundations & Summer Harvest" },
+                        { number: 2, weeks: 10, startWeek: 11, name: "Practical Skills & Application" },
+                        { number: 3, weeks: 10, startWeek: 21, name: "Machinery & Advanced Integration" },
+                        { number: 4, weeks: 7, startWeek: 31, name: "Apex & Finalisation" }
+                    ],
+                    projectMilestones: [
+                        { week: 18, label: "Project Start" },
+                        { week: 25, label: "Phase 2" },
+                        { week: 30, label: "Integration" },
+                        { week: 34, label: "Final Phase" }
+                    ]
+                };
+                blockedWeeks = {};
                 currentPlanId = 'default';
-                renderTimeline();
                 
-                // Update shared plan
+                updateTotalWeeksDisplay();
+                initializeTimeline();
+                renderTimeline();
                 updateSharedPlan();
+                saveCourseStructure();
+                saveBlockedWeeks();
                 
                 showSyncNotification('Reset to default sequence');
-                
                 trackUsage('reset_default');
             }
         }
@@ -2594,10 +3229,7 @@ opacity: 0.8;
         }
         
         function addCustomUnit() {
-            // Save to history before change
             saveToHistory('add_custom_unit');
-            
-            // Add a custom unit template
             const nextId = Math.max(...currentUnits.map(u => u.id), 0) + 1;
             
             const customUnit = {
@@ -2614,18 +3246,12 @@ opacity: 0.8;
             
             currentUnits.push(customUnit);
             renderTimeline();
-            
-            // Update shared plan
             updateSharedPlan();
-            
-            // Open modal to edit
             setTimeout(() => openUnitModal(nextId), 100);
-            
             trackUsage('add_custom_unit');
         }
         
         function highlightUnits(mode) {
-            // Remove all highlights first
             document.querySelectorAll('.unit-block').forEach(block => {
                 block.style.boxShadow = '';
                 block.style.transform = '';
@@ -2633,7 +3259,6 @@ opacity: 0.8;
             
             if (mode === 'none') return;
             
-            // Apply highlights based on mode
             currentUnits.forEach(unit => {
                 let shouldHighlight = false;
                 
@@ -2670,9 +3295,11 @@ opacity: 0.8;
         
         function exportPlan() {
             const data = {
-                version: '2.1',
+                version: '2.3',
                 timestamp: new Date().toISOString(),
                 units: currentUnits,
+                courseData: dynamicCourseData,
+                blockedWeeks: blockedWeeks,
                 metadata: {
                     title: document.getElementById('courseTitle').textContent,
                     description: document.getElementById('courseDescription').textContent
@@ -2699,12 +3326,18 @@ opacity: 0.8;
                 try {
                     const data = JSON.parse(e.target.result);
                     if (data.version && data.units) {
-                        // Save to history before change
                         saveToHistory('import_plan');
                         
                         currentUnits = data.units;
+                        if (data.courseData) dynamicCourseData = data.courseData;
+                        if (data.blockedWeeks) blockedWeeks = data.blockedWeeks;
+                        
+                        updateTotalWeeksDisplay();
+                        initializeTimeline();
                         renderTimeline();
                         updateSharedPlan();
+                        saveCourseStructure();
+                        saveBlockedWeeks();
                         
                         if (data.metadata && data.metadata.title) {
                             const courseTitle = document.getElementById('courseTitle');
@@ -2727,7 +3360,7 @@ opacity: 0.8;
             const input = document.getElementById('importPlanInput');
             if (input && input.files.length > 0) {
                 importPlan(input.files[0]);
-                input.value = ''; // Reset input
+                input.value = '';
             }
         }
         
@@ -2736,6 +3369,11 @@ opacity: 0.8;
                 historyIndex--;
                 const state = history[historyIndex];
                 currentUnits = JSON.parse(JSON.stringify(state.units));
+                if (state.courseData) dynamicCourseData = JSON.parse(JSON.stringify(state.courseData));
+                if (state.blockedWeeks) blockedWeeks = JSON.parse(JSON.stringify(state.blockedWeeks));
+                
+                updateTotalWeeksDisplay();
+                initializeTimeline();
                 renderTimeline();
                 showSyncNotification('Undo: ' + state.action);
                 trackUsage('undo', { action: state.action });
@@ -2747,6 +3385,11 @@ opacity: 0.8;
                 historyIndex++;
                 const state = history[historyIndex];
                 currentUnits = JSON.parse(JSON.stringify(state.units));
+                if (state.courseData) dynamicCourseData = JSON.parse(JSON.stringify(state.courseData));
+                if (state.blockedWeeks) blockedWeeks = JSON.parse(JSON.stringify(state.blockedWeeks));
+                
+                updateTotalWeeksDisplay();
+                initializeTimeline();
                 renderTimeline();
                 showSyncNotification('Redo: ' + state.action);
                 trackUsage('redo', { action: state.action });
@@ -2756,20 +3399,19 @@ opacity: 0.8;
         // ========== SHARE FUNCTIONALITY ==========
         
         function generateShareLink() {
-            // Save current plan as shared plan
             const shareId = 'shared_' + Date.now();
             const sharedPlan = {
                 id: shareId,
                 name: 'Shared Student View',
                 date: new Date().toISOString(),
                 lastUpdate: new Date().toISOString(),
-                units: JSON.parse(JSON.stringify(currentUnits))
+                units: JSON.parse(JSON.stringify(currentUnits)),
+                courseData: JSON.parse(JSON.stringify(dynamicCourseData)),
+                blockedWeeks: JSON.parse(JSON.stringify(blockedWeeks))
             };
             
-            // Save to localStorage
             localStorage.setItem('sharedPlan_' + shareId, JSON.stringify(sharedPlan));
             
-            // Generate share URL
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = `${baseUrl}?student=true&plan=${shareId}`;
             
@@ -2777,7 +3419,6 @@ opacity: 0.8;
         }
         
         function updateSharedPlan() {
-            // Update any existing shared plan with current units
             const sharedPlans = Object.keys(localStorage)
                 .filter(key => key.startsWith('sharedPlan_'))
                 .map(key => ({
@@ -2787,11 +3428,12 @@ opacity: 0.8;
             
             sharedPlans.forEach(({ key, data }) => {
                 data.units = JSON.parse(JSON.stringify(currentUnits));
+                data.courseData = JSON.parse(JSON.stringify(dynamicCourseData));
+                data.blockedWeeks = JSON.parse(JSON.stringify(blockedWeeks));
                 data.lastUpdate = new Date().toISOString();
                 localStorage.setItem(key, JSON.stringify(data));
             });
             
-            // Show sync notification
             showSyncNotification('Changes saved to all student views');
         }
         
@@ -2805,15 +3447,9 @@ opacity: 0.8;
             shareInput.value = shareUrl;
             shareContainer.classList.add('show');
             
-            // Generate QR code
             generateQRCode(shareUrl);
-            
-            // Auto-copy to clipboard
             copyShareLink();
-            
-            // Show sync notification
             showSyncNotification('Student view link generated and copied!');
-            
             trackUsage('share_link_generated');
         }
         
@@ -2829,7 +3465,6 @@ opacity: 0.8;
                     showSyncNotification('Link copied to clipboard!');
                 });
             } catch (e) {
-                // Fallback for older browsers
                 document.execCommand('copy');
                 showSyncNotification('Link copied to clipboard!');
             }
@@ -2841,7 +3476,6 @@ opacity: 0.8;
             const qrContainer = document.getElementById('qrCode');
             if (!qrContainer) return;
             
-            // Simple QR code using Google Charts API
             qrContainer.innerHTML = `
                 <div style="margin-bottom: 10px; font-size: 12px; color: #636e72;">Scan to open on mobile:</div>
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}" 
@@ -2855,13 +3489,11 @@ opacity: 0.8;
         
         function toggleViewMode() {
             if (isStudentView) {
-                // Switch to editor view - remove student parameter
                 const url = new URL(window.location.href);
                 url.searchParams.delete('student');
                 url.searchParams.delete('plan');
                 window.location.href = url.toString();
             } else {
-                // Switch to student view
                 const shareUrl = generateShareLink();
                 window.location.href = shareUrl;
             }
@@ -2889,13 +3521,14 @@ opacity: 0.8;
         
         function setupKeyboardNavigation() {
             document.addEventListener('keydown', (e) => {
-                // Don't interfere with form inputs
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
                 
                 switch(e.key) {
                     case 'Escape':
                         const modal = document.getElementById('unitModal');
                         if (modal) modal.style.display = 'none';
+                        const termModal = document.getElementById('termModal');
+                        if (termModal) termModal.style.display = 'none';
                         const shareContainer = document.getElementById('shareLinkContainer');
                         if (shareContainer) shareContainer.classList.remove('show');
                         break;
@@ -2941,12 +3574,13 @@ opacity: 0.8;
         // ========== INITIALIZATION ==========
         
         document.addEventListener('DOMContentLoaded', function() {
+            loadCourseStructure();
+            loadBlockedWeeks();
+            
             if (isStudentView) {
-                // Load shared plan for student view
                 loadSharedPlan();
                 setupStudentView();
             } else {
-                // Regular editor view
                 initializeTimeline();
                 renderPalette();
                 renderTimeline();
@@ -2957,7 +3591,6 @@ opacity: 0.8;
             updateViewToggle();
             setupKeyboardNavigation();
             
-            // Initial history state
             if (!isStudentView) {
                 saveToHistory('initial_state');
             }
